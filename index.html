@@ -515,40 +515,27 @@
 
       <div class="tl-item reveal d1">
         <div class="tl-time">
-          <div class="tl-time-h">15<span style="font-size:0.8em">:00</span></div>
+          <div class="tl-time-h">13<span style="font-size:0.8em">:30</span></div>
           <div class="tl-time-s">h</div>
         </div>
         <div class="tl-line"></div>
         <div class="tl-content">
-          <div class="tl-title" data-t="ev1t">Окупљање</div>
-          <div class="tl-detail" data-t="ev1d">Добродошлица и аперитив</div>
-          <a class="tl-loc" href="#" id="map1" data-t="ev1loc">Локација ↗</a>
+          <div class="tl-title" data-t="ev1t">Венчање</div>
+          <div class="tl-detail" data-t="ev1d">Црква Ружица, Калемегдан</div>
+          <a class="tl-loc" href="https://maps.google.com/?q=Crkva+Ružica+Kalemegdan+Beograd" target="_blank" rel="noopener" data-t="ev1loc">Мапа ↗</a>
         </div>
       </div>
 
       <div class="tl-item reveal d2">
         <div class="tl-time">
-          <div class="tl-time-h">17<span style="font-size:0.8em">:00</span></div>
+          <div class="tl-time-h">15<span style="font-size:0.8em">:00</span></div>
           <div class="tl-time-s">h</div>
         </div>
         <div class="tl-line"></div>
         <div class="tl-content">
-          <div class="tl-title" data-t="ev2t">Венчање</div>
-          <div class="tl-detail" data-t="ev2d">Свечана церемонија</div>
-          <a class="tl-loc" href="#" id="map2" data-t="ev2loc">Локација ↗</a>
-        </div>
-      </div>
-
-      <div class="tl-item reveal d3">
-        <div class="tl-time">
-          <div class="tl-time-h">19<span style="font-size:0.8em">:00</span></div>
-          <div class="tl-time-s">h</div>
-        </div>
-        <div class="tl-line"></div>
-        <div class="tl-content">
-          <div class="tl-title" data-t="ev3t">Свечана вечера</div>
-          <div class="tl-detail" data-t="ev3d">Прослава са вољенима</div>
-          <a class="tl-loc" href="#" id="map3" data-t="ev3loc">Локација ↗</a>
+          <div class="tl-title" data-t="ev2t">Свечани ручак</div>
+          <div class="tl-detail" data-t="ev2d">Ресторан Мезе · 15:00–18:00</div>
+          <a class="tl-loc" href="https://maps.google.com/?q=Restoran+Meze+Beograd" target="_blank" rel="noopener" data-t="ev2loc">Мапа ↗</a>
         </div>
       </div>
 
@@ -560,9 +547,9 @@
 <div class="location-wrap reveal">
   <p class="sec-label" data-t="locLabel">Локација</p>
   <h2 class="sec-title" data-t="locTitle">Место одржавања</h2>
-  <p class="venue-name" data-t="venueName">[Назив места]</p>
-  <p class="venue-addr" data-t="venueAddr">[Адреса · Град]</p>
-  <a class="map-btn" href="#" id="mainMap" data-t="mapBtn">Отвори на мапи ↗</a>
+  <p class="venue-name" data-t="venueName">Ресторан Мезе</p>
+  <p class="venue-addr" data-t="venueAddr">Београд</p>
+  <a class="map-btn" href="https://maps.google.com/?q=Restoran+Meze+Beograd" target="_blank" rel="noopener" id="mainMap" data-t="mapBtn">Отвори на мапи ↗</a>
 </div>
 
 <!-- ═══════════════════════════ RSVP ══════════════════════════════ -->
@@ -640,11 +627,11 @@
 <script>
 // ── CONFIG — edit these ──────────────────────────────────────────
 const CONFIG = {
-  date:       '__.__.2025.',         // wedding date
-  venueName:  '[Назив места]',        // venue name
-  venueAddr:  '[Адреса · Град]',      // venue address
-  mapUrl:     'https://maps.google.com/?q=',  // paste full Google Maps link
-  rsvpDeadline: '__.__.2025.',
+  date:         '__.__.2025.',        // wedding date — fill in when confirmed
+  venueName:    'Ресторан Мезе',
+  venueAddr:    'Београд',
+  mapUrl:       'https://maps.google.com/?q=Restoran+Meze+Beograd',
+  rsvpDeadline: '__.__.2025.',        // fill in RSVP deadline
 };
 // ────────────────────────────────────────────────────────────────
 
@@ -653,15 +640,15 @@ const T = {
     eyebrow:    'венчање',
     name1:      'Милан', name2: 'Нина',
     date:       CONFIG.date,
-    heroVenue:  CONFIG.venueName + ' · Град',
-    quote:      '„Двоје постајуједно, и тај тренутак траје заувек."',
+    heroVenue:  'Црква Ружица · Београд',
+    quote:      '„Двоје постају једно, и тај тренутак траје заувек."',
     progLabel:  'Програм венчања',
     progTitle:  'Распоред дана',
-    ev1t: 'Окупљање',    ev1d: 'Добродошлица и аперитив',    ev1loc: 'Локација ↗',
-    ev2t: 'Венчање',     ev2d: 'Свечана церемонија',         ev2loc: 'Локација ↗',
-    ev3t: 'Свечана вечера', ev3d: 'Прослава са вољенима',   ev3loc: 'Локација ↗',
+    ev1t: 'Венчање',        ev1d: 'Црква Ружица, Калемегдан',      ev1loc: 'Мапа ↗',
+    ev2t: 'Свечани ручак',  ev2d: 'Ресторан Мезе · 15:00–18:00',   ev2loc: 'Мапа ↗',
+    ev3t: '',               ev3d: '',                                ev3loc: '',
     locLabel:   'Локација',
-    locTitle:   'Место одржавања',
+    locTitle:   'Место прославе',
     venueName:  CONFIG.venueName,
     venueAddr:  CONFIG.venueAddr,
     mapBtn:     'Отвори на мапи ↗',
@@ -684,15 +671,15 @@ const T = {
     eyebrow:    'γάμος',
     name1:      'Μιλάν', name2: 'Νίνα',
     date:       CONFIG.date,
-    heroVenue:  CONFIG.venueName + ' · Πόλη',
+    heroVenue:  'Εκκλησία Ružica · Βελιγράδι',
     quote:      '«Δύο γίνονται ένα, και εκείνη η στιγμή κρατά για πάντα.»',
     progLabel:  'Πρόγραμμα γάμου',
     progTitle:  'Πρόγραμμα ημέρας',
-    ev1t: 'Υποδοχή',     ev1d: 'Καλωσόρισμα και απεριτίφ',    ev1loc: 'Τοποθεσία ↗',
-    ev2t: 'Τελετή',      ev2d: 'Επίσημη τελετή γάμου',        ev2loc: 'Τοποθεσία ↗',
-    ev3t: 'Δείπνο',      ev3d: 'Γιορτή με τους αγαπημένους',  ev3loc: 'Τοποθεσία ↗',
+    ev1t: 'Τελετή',       ev1d: 'Εκκλησία Ružica, Kalemegdan',    ev1loc: 'Χάρτης ↗',
+    ev2t: 'Γεύμα',        ev2d: 'Εστιατόριο Meze · 15:00–18:00',  ev2loc: 'Χάρτης ↗',
+    ev3t: '',             ev3d: '',                                  ev3loc: '',
     locLabel:   'Τοποθεσία',
-    locTitle:   'Χώρος τελετής',
+    locTitle:   'Χώρος εορτασμού',
     venueName:  CONFIG.venueName,
     venueAddr:  CONFIG.venueAddr,
     mapBtn:     'Άνοιγμα στον χάρτη ↗',
