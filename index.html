@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Позивница — Милан & Нина">
+  <meta property="og:title" content="Милан & Нина • Венчање">
+  <meta property="og:description" content="Срдачно вас позивамо на наше венчање">
+  <title>Милан & Нина • Венчање</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --gold:       #C19A6B;
+      --gold-light: #D4B896;
+      --gold-dark:  #9A7A52;
+      --cream:      #FAF7F2;
+      --cream-dark: #F0EAE0;
+      --text:       #1C1208;
+      --text-mid:   #4A3A28;
+      --text-muted: #7A6A58;
+      --olive:      #4A5C33;
+      --olive-dark: #2E3B1F;
+      --border:     #DDD0B8;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── LANGUAGE TOGGLE ─────────────────────────── */
+    .lang-toggle {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.25rem;
+      z-index: 1000;
+      display: flex;
+      gap: 0;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-family: 'Cormorant SC', 'Cormorant Garamond', serif;
+      color: var(--text-muted);
+      padding: 0.35rem 0.85rem;
+      letter-spacing: 0.08em;
+      transition: all 0.25s ease;
+    }
+    .lang-btn.active {
+      background: var(--olive-dark);
+      color: var(--gold-light);
+    }
+
+    /* ── HERO ────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background: var(--olive-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, rgba(193,154,107,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    /* decorative frame */
+    .hero-frame {
+      position: absolute;
+      inset: 1.5rem;
+      border: 1px solid rgba(193,154,107,0.35);
+      pointer-events: none;
+    }
+    .hero-frame::before, .hero-frame::after {
+      content: '';
+      position: absolute;
+      width: 50px; height: 50px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+    .hero-frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .hero-frame::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+    .hero-stars {
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 1.2em;
+      margin-bottom: 2.5rem;
+      opacity: 0.75;
+    }
+    .hero-eyebrow {
+      color: var(--gold-light);
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.45em;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      opacity: 0.85;
+    }
+    .hero-names {
+      font-size: clamp(3.2rem, 11vw, 6.5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.05;
+      letter-spacing: 0.01em;
+    }
+    .hero-amp {
+      color: var(--gold);
+      font-style: normal;
+      font-weight: 300;
+      padding: 0 0.15em;
+    }
+    .hero-rule {
+      width: 70px; height: 1px;
+      background: var(--gold);
+      margin: 2rem auto;
+      opacity: 0.55;
+    }
+    .hero-date {
+      color: var(--gold-light);
+      font-size: 1.25rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+    }
+    .hero-venue {
+      color: rgba(250,247,242,0.5);
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--gold);
+      opacity: 0.5;
+      font-size: 1.25rem;
+      animation: float 2.5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(7px); }
+    }
+
+    /* ── SHARED ──────────────────────────────────── */
+    .container { max-width: 680px; margin: 0 auto; }
+
+    .sec-label {
+      text-align: center;
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.45em;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .sec-title {
+      text-align: center;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 3rem;
+      line-height: 1.2;
+    }
+    .orn-divider {
+      text-align: center;
+      color: var(--gold);
+      font-size: 0.7rem;
+      letter-spacing: 0.8em;
+      opacity: 0.55;
+      margin: 1rem 0 2.5rem;
+    }
+
+    /* ── QUOTE ───────────────────────────────────── */
+    .quote-wrap {
+      background: var(--cream-dark);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .quote-glyph {
+      display: block;
+      color: var(--gold);
+      font-size: 2.5rem;
+      line-height: 1;
+      margin-bottom: 1.25rem;
+      opacity: 0.7;
+    }
+    .quote-text {
+      font-size: 1.45rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-mid);
+      line-height: 1.75;
+    }
+
+    /* ── PROGRAM ─────────────────────────────────── */
+    .program-wrap {
+      padding: 5rem 2rem;
+    }
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .tl-item {
+      display: grid;
+      grid-template-columns: 90px 1px 1fr;
+      gap: 0 1.5rem;
+      padding-bottom: 2.5rem;
+      position: relative;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-time {
+      text-align: right;
+      padding-top: 0.1rem;
+    }
+    .tl-time-h {
+      font-size: 1.65rem;
+      font-weight: 300;
+      color: var(--gold-dark);
+      line-height: 1;
+    }
+    .tl-time-s {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .tl-line {
+      background: var(--border);
+      position: relative;
+      flex-shrink: 0;
+    }
+    .tl-line::before {
+      content: '';
+      position: absolute;
+      top: 0.35rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 3px var(--cream);
+    }
+    .tl-item:last-child .tl-line {
+      background: linear-gradient(to bottom, var(--border), transparent);
+    }
+    .tl-content { padding-top: 0.2rem; padding-left: 0.5rem; }
+    .tl-title {
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+    .tl-detail {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .tl-loc {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .tl-loc:hover { border-color: var(--gold-dark); }
+
+    /* ── LOCATION ────────────────────────────────── */
+    .location-wrap {
+      background: var(--olive-dark);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .location-wrap .sec-label { color: rgba(193,154,107,0.7); }
+    .location-wrap .sec-title { color: var(--cream); }
+    .venue-name {
+      font-size: 1.9rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--gold-light);
+      margin-bottom: 0.4rem;
+    }
+    .venue-addr {
+      color: rgba(250,247,242,0.5);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+    .map-btn {
+      display: inline-block;
+      padding: 0.75rem 2.5rem;
+      border: 1px solid rgba(193,154,107,0.6);
+      color: var(--gold-light);
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .map-btn:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--olive-dark);
+    }
+
+    /* ── RSVP ────────────────────────────────────── */
+    .rsvp-wrap { padding: 5rem 2rem; }
+    .rsvp-deadline {
+      text-align: center;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .rsvp-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+    .fg { display: flex; flex-direction: column; gap: 0.5rem; }
+    .fl {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--text-mid);
+    }
+    .fi, .fs, .ft {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      background: white;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1rem;
+      color: var(--text);
+      outline: none;
+      border-radius: 0;
+      transition: border-color 0.25s;
+      -webkit-appearance: none;
+    }
+    .fi:focus, .fs:focus, .ft:focus { border-color: var(--gold); }
+    .fs {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C19A6B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+    .ft { resize: vertical; min-height: 90px; }
+
+    .att-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .att-opt { position: relative; }
+    .att-opt input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .att-opt label {
+      display: block;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+    .att-opt input[type="radio"]:checked + label {
+      border-color: var(--olive-dark);
+      background: var(--olive-dark);
+      color: var(--cream);
+    }
+    .att-opt label:hover:not(.checked) { border-color: var(--gold); }
+
+    .sub-btn {
+      background: var(--olive-dark);
+      color: var(--cream);
+      border: none;
+      padding: 1rem 3rem;
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.3em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      align-self: center;
+      min-width: 220px;
+    }
+    .sub-btn:hover:not(:disabled) { background: var(--gold-dark); }
+    .sub-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .form-msg { font-size: 0.85rem; font-style: italic; text-align: center; display: none; }
+    .form-msg.err  { color: #b33; display: block; }
+    .form-msg.ok   { color: var(--olive); display: block; }
+
+    .success-box {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .success-box.show { display: block; }
+    .success-box .glyph { display: block; font-size: 2rem; color: var(--gold); margin-bottom: 1rem; opacity: 0.7; }
+    .success-box p:first-of-type { font-size: 1.5rem; font-style: italic; color: var(--text-mid); }
+    .success-box p.sub { font-size: 0.85rem; color: var(--text-muted); letter-spacing: 0.1em; margin-top: 0.75rem; font-style: normal; }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--text);
+      padding: 3.5rem 2rem;
+      text-align: center;
+    }
+    .footer-names {
+      color: var(--gold-light);
+      font-size: 1.6rem;
+      font-style: italic;
+      font-weight: 300;
+      margin-bottom: 0.75rem;
+    }
+    .footer-sub {
+      color: rgba(250,247,242,0.3);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    /* ── ANIMATIONS ──────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal.d1 { transition-delay: 0.1s; }
+    .reveal.d2 { transition-delay: 0.2s; }
+    .reveal.d3 { transition-delay: 0.3s; }
+
+    /* ── RESPONSIVE ──────────────────────────────── */
+    @media (max-width: 580px) {
+      .tl-item { grid-template-columns: 70px 1px 1fr; gap: 0 1rem; }
+      .att-opts { grid-template-columns: 1fr; }
+      .hero-frame { inset: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Language toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('sr')">СР</button>
+  <button class="lang-btn"        onclick="setLang('el')">ΕΛ</button>
+</div>
+
+<!-- ═══════════════════════════ HERO ══════════════════════════════ -->
+<div class="hero">
+  <div class="hero-frame"></div>
+  <p class="hero-stars">✦ &nbsp; ✦ &nbsp; ✦</p>
+  <p class="hero-eyebrow" data-t="eyebrow">венчање</p>
+  <h1 class="hero-names">
+    <span data-t="name1">Милан</span>
+    <span class="hero-amp">&</span>
+    <span data-t="name2">Нина</span>
+  </h1>
+  <div class="hero-rule"></div>
+  <p class="hero-date"  data-t="date">__.__.2025.</p>
+  <p class="hero-venue" data-t="heroVenue">Место · Град</p>
+  <span class="hero-scroll">↓</span>
+</div>
+
+<!-- ═══════════════════════════ QUOTE ═════════════════════════════ -->
+<div class="quote-wrap">
+  <div class="container reveal">
+    <span class="quote-glyph">❧</span>
+    <p class="quote-text" data-t="quote">
+      „Двоје постају једно, и тај тренутак траје заувек."
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ PROGRAM ══════════════════════════ -->
+<div class="program-wrap">
+  <div class="container">
+    <p class="sec-label reveal"   data-t="progLabel">Програм венчања</p>
+    <h2 class="sec-title reveal d1" data-t="progTitle">Распоред дана</h2>
+
+    <div class="timeline">
+
+      <div class="tl-item reveal d1">
+        <div class="tl-time">
+          <div class="tl-time-h">15<span style="font-size:0.8em">:00</span></div>
+          <div class="tl-time-s">h</div>
+        </div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <div class="tl-title" data-t="ev1t">Окупљање</div>
+          <div class="tl-detail" data-t="ev1d">Добродошлица и аперитив</div>
+          <a class="tl-loc" href="#" id="map1" data-t="ev1loc">Локација ↗</a>
+        </div>
+      </div>
+
+      <div class="tl-item reveal d2">
+        <div class="tl-time">
+          <div class="tl-time-h">17<span style="font-size:0.8em">:00</span></div>
+          <div class="tl-time-s">h</div>
+        </div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <div class="tl-title" data-t="ev2t">Венчање</div>
+          <div class="tl-detail" data-t="ev2d">Свечана церемонија</div>
+          <a class="tl-loc" href="#" id="map2" data-t="ev2loc">Локација ↗</a>
+        </div>
+      </div>
+
+      <div class="tl-item reveal d3">
+        <div class="tl-time">
+          <div class="tl-time-h">19<span style="font-size:0.8em">:00</span></div>
+          <div class="tl-time-s">h</div>
+        </div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <div class="tl-title" data-t="ev3t">Свечана вечера</div>
+          <div class="tl-detail" data-t="ev3d">Прослава са вољенима</div>
+          <a class="tl-loc" href="#" id="map3" data-t="ev3loc">Локација ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ LOCATION ═════════════════════════ -->
+<div class="location-wrap reveal">
+  <p class="sec-label" data-t="locLabel">Локација</p>
+  <h2 class="sec-title" data-t="locTitle">Место одржавања</h2>
+  <p class="venue-name" data-t="venueName">[Назив места]</p>
+  <p class="venue-addr" data-t="venueAddr">[Адреса · Град]</p>
+  <a class="map-btn" href="#" id="mainMap" data-t="mapBtn">Отвори на мапи ↗</a>
+</div>
+
+<!-- ═══════════════════════════ RSVP ══════════════════════════════ -->
+<div class="rsvp-wrap">
+  <div class="container">
+    <p class="sec-label reveal"   data-t="rsvpLabel">RSVP</p>
+    <h2 class="sec-title reveal d1" data-t="rsvpTitle">Потврда доласка</h2>
+    <p class="rsvp-deadline reveal d2" data-t="rsvpDl">
+      Молимо потврдите долазак до <strong>__.__.2025.</strong>
+    </p>
+    <div class="orn-divider reveal">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+    <form class="rsvp-form reveal d1" id="rsvpForm" novalidate>
+      <div class="fg">
+        <label class="fl" data-t="nameL">Ime и презиме</label>
+        <input class="fi" type="text" name="name" required
+               data-ph="namePh" placeholder="Ваше пуно ime">
+      </div>
+
+      <div class="fg">
+        <label class="fl" data-t="attL">Долазите?</label>
+        <div class="att-opts">
+          <div class="att-opt">
+            <input type="radio" name="attending" id="att-yes" value="да" checked>
+            <label for="att-yes" data-t="attYes">Да, долазим ✓</label>
+          </div>
+          <div class="att-opt">
+            <input type="radio" name="attending" id="att-no" value="не">
+            <label for="att-no" data-t="attNo">Нажалост, не могу</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="fg" id="guestsRow">
+        <label class="fl" data-t="guestL">Број гостију</label>
+        <select class="fs" name="guests">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label class="fl" data-t="dietL">Алергије / посебни захтеви</label>
+        <input class="fi" type="text" name="dietary"
+               data-ph="dietPh" placeholder="Нпр. вегетаријанска исхрана...">
+      </div>
+
+      <div class="fg">
+        <label class="fl" data-t="msgL">Порука младенцима</label>
+        <textarea class="ft" name="message"
+                  data-ph="msgPh" placeholder="Опционо..."></textarea>
+      </div>
+
+      <p class="form-msg err" id="formErr"></p>
+      <button type="submit" class="sub-btn" data-t="subBtn">Потврдите долазак</button>
+    </form>
+
+    <div class="success-box" id="successBox">
+      <span class="glyph">✦</span>
+      <p data-t="successMsg">Хвала! Ваша потврда је примљена.</p>
+      <p class="sub" data-t="successSub">Радујемо се вашем доласку!</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer>
+  <p class="footer-names" data-t="footerNames">Милан &amp; Нина</p>
+  <p class="footer-sub"   data-t="footerSub">2025</p>
+</footer>
+
+<script>
+// ── CONFIG — edit these ──────────────────────────────────────────
+const CONFIG = {
+  date:       '__.__.2025.',         // wedding date
+  venueName:  '[Назив места]',        // venue name
+  venueAddr:  '[Адреса · Град]',      // venue address
+  mapUrl:     'https://maps.google.com/?q=',  // paste full Google Maps link
+  rsvpDeadline: '__.__.2025.',
+};
+// ────────────────────────────────────────────────────────────────
+
+const T = {
+  sr: {
+    eyebrow:    'венчање',
+    name1:      'Милан', name2: 'Нина',
+    date:       CONFIG.date,
+    heroVenue:  CONFIG.venueName + ' · Град',
+    quote:      '„Двоје постајуједно, и тај тренутак траје заувек."',
+    progLabel:  'Програм венчања',
+    progTitle:  'Распоред дана',
+    ev1t: 'Окупљање',    ev1d: 'Добродошлица и аперитив',    ev1loc: 'Локација ↗',
+    ev2t: 'Венчање',     ev2d: 'Свечана церемонија',         ev2loc: 'Локација ↗',
+    ev3t: 'Свечана вечера', ev3d: 'Прослава са вољенима',   ev3loc: 'Локација ↗',
+    locLabel:   'Локација',
+    locTitle:   'Место одржавања',
+    venueName:  CONFIG.venueName,
+    venueAddr:  CONFIG.venueAddr,
+    mapBtn:     'Отвори на мапи ↗',
+    rsvpLabel:  'RSVP',
+    rsvpTitle:  'Потврда доласка',
+    rsvpDl:     'Молимо потврдите долазак до <strong>' + CONFIG.rsvpDeadline + '</strong>',
+    nameL:      'Ime и презиме',          namePh:  'Ваше пуно ime',
+    attL:       'Долазите?',
+    attYes:     'Да, долазим ✓',          attNo:   'Нажалост, не могу',
+    guestL:     'Број гостију',
+    dietL:      'Алергије / посебни захтеви', dietPh: 'Нпр. вегетаријанска исхрана...',
+    msgL:       'Порука младенцима',       msgPh:  'Опционо...',
+    subBtn:     'Потврдите долазак',
+    successMsg: 'Хвала! Ваша потврда је примљена.',
+    successSub: 'Радујемо се вашем доласку!',
+    footerNames:'Милан & Нина',
+    footerSub:  '2025',
+  },
+  el: {
+    eyebrow:    'γάμος',
+    name1:      'Μιλάν', name2: 'Νίνα',
+    date:       CONFIG.date,
+    heroVenue:  CONFIG.venueName + ' · Πόλη',
+    quote:      '«Δύο γίνονται ένα, και εκείνη η στιγμή κρατά για πάντα.»',
+    progLabel:  'Πρόγραμμα γάμου',
+    progTitle:  'Πρόγραμμα ημέρας',
+    ev1t: 'Υποδοχή',     ev1d: 'Καλωσόρισμα και απεριτίφ',    ev1loc: 'Τοποθεσία ↗',
+    ev2t: 'Τελετή',      ev2d: 'Επίσημη τελετή γάμου',        ev2loc: 'Τοποθεσία ↗',
+    ev3t: 'Δείπνο',      ev3d: 'Γιορτή με τους αγαπημένους',  ev3loc: 'Τοποθεσία ↗',
+    locLabel:   'Τοποθεσία',
+    locTitle:   'Χώρος τελετής',
+    venueName:  CONFIG.venueName,
+    venueAddr:  CONFIG.venueAddr,
+    mapBtn:     'Άνοιγμα στον χάρτη ↗',
+    rsvpLabel:  'RSVP',
+    rsvpTitle:  'Επιβεβαίωση παρουσίας',
+    rsvpDl:     'Παρακαλούμε επιβεβαιώστε έως <strong>' + CONFIG.rsvpDeadline + '</strong>',
+    nameL:      'Ονοματεπώνυμο',          namePh:  'Ονοματεπώνυμό σας',
+    attL:       'Θα παραστείτε;',
+    attYes:     'Ναι, θα παραστώ ✓',      attNo:   'Δυστυχώς, δεν μπορώ',
+    guestL:     'Αριθμός ατόμων',
+    dietL:      'Αλλεργίες / ειδικές απαιτήσεις', dietPh: 'Π.χ. χορτοφαγική διατροφή...',
+    msgL:       'Μήνυμα στους νεόνυμφους', msgPh: 'Προαιρετικό...',
+    subBtn:     'Επιβεβαίωση παρουσίας',
+    successMsg: 'Ευχαριστούμε! Η επιβεβαίωσή σας ελήφθη.',
+    successSub: 'Ανυπομονούμε να σας δούμε!',
+    footerNames:'Μιλάν & Νίνα',
+    footerSub:  '2025',
+  }
+};
+
+let lang = 'sr';
+
+function setLang(l) {
+  lang = l;
+  const t = T[l];
+
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const k = el.getAttribute('data-t');
+    if (k in t) el.innerHTML = t[k];
+  });
+  document.querySelectorAll('[data-ph]').forEach(el => {
+    const k = el.getAttribute('data-ph');
+    if (k in t) el.placeholder = t[k];
+  });
+
+  document.documentElement.lang = l === 'el' ? 'el' : 'sr';
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim() === (l === 'sr' ? 'СР' : 'ΕΛ'));
+  });
+
+  const url = new URL(location.href);
+  l === 'el' ? url.searchParams.set('lang','el') : url.searchParams.delete('lang');
+  history.replaceState({}, '', url);
+}
+
+// Init on load
+document.addEventListener('DOMContentLoaded', () => {
+  // URL param
+  const p = new URLSearchParams(location.search);
+  if (p.get('lang') === 'el') setLang('el');
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Hide guests row when "not attending" selected
+  document.querySelectorAll('input[name="attending"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('guestsRow').style.display =
+        document.querySelector('input[name="attending"]:checked').value === 'не' ||
+        document.querySelector('input[name="attending"]:checked').value === 'Όχι' ? 'none' : '';
+    });
+  });
+
+  // RSVP submit
+  document.getElementById('rsvpForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = e.target;
+    const btn  = form.querySelector('.sub-btn');
+    const err  = document.getElementById('formErr');
+
+    if (!form.name.value.trim()) {
+      err.textContent = lang === 'el' ? 'Παρακαλούμε εισάγετε το ονοματεπώνυμό σας.' : 'Молимо унесите своје ime и презиме.';
+      err.classList.add('err');
+      return;
+    }
+
+    btn.disabled = true;
+    err.classList.remove('err');
+
+    const payload = {
+      name:      form.name.value.trim(),
+      attending: form.attending.value,
+      guests:    form.attending.value === 'не' || form.attending.value === 'Όχι' ? 0 : parseInt(form.guests.value),
+      dietary:   form.dietary.value.trim(),
+      message:   form.message.value.trim(),
+      lang:      lang,
+    };
+
+    try {
+      const res = await fetch('rsvp.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        form.style.display = 'none';
+        document.querySelector('.rsvp-deadline')?.style && (document.querySelector('.rsvp-deadline').style.display = 'none');
+        document.querySelector('.orn-divider')?.style && (document.querySelector('.orn-divider').style.display = 'none');
+        document.getElementById('successBox').classList.add('show');
+      } else {
+        err.textContent = data.error || 'Грешка. Покушајте поново.';
+        err.classList.add('err');
+        btn.disabled = false;
+      }
+    } catch {
+      err.textContent = lang === 'el' ? 'Σφάλμα σύνδεσης. Δοκιμάστε ξανά.' : 'Грешка конекције. Покушајте поново.';
+      err.classList.add('err');
+      btn.disabled = false;
+    }
+  });
+});
+</script>
+</body>
+</html>
