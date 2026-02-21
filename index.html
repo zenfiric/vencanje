@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Позивница — Милан & Нина">
-  <meta property="og:title" content="Милан & Нина • Венчање">
+  <meta name="description" content="Позивница — Милан и Нина">
+  <meta name="theme-color" content="#2E3B1F">
+  <meta property="og:title" content="Милан и Нина • Венчање">
   <meta property="og:description" content="Срдачно вас позивамо на наше венчање">
-  <title>Милан & Нина • Венчање</title>
+  <title>Милан и Нина • Венчање</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet">
 
   <style>
@@ -132,7 +134,6 @@
     }
     .hero-amp {
       color: var(--gold);
-      font-style: normal;
       font-weight: 300;
       padding: 0 0.15em;
     }
@@ -149,7 +150,7 @@
       letter-spacing: 0.2em;
     }
     .hero-venue {
-      color: rgba(250,247,242,0.5);
+      color: rgba(250,247,242,0.75);
       font-size: 0.8rem;
       font-weight: 300;
       letter-spacing: 0.3em;
@@ -446,7 +447,7 @@
       margin-bottom: 0.75rem;
     }
     .footer-sub {
-      color: rgba(250,247,242,0.3);
+      color: rgba(250,247,242,0.5);
       font-size: 0.7rem;
       letter-spacing: 0.25em;
       text-transform: uppercase;
@@ -486,7 +487,7 @@
   <p class="hero-eyebrow" data-t="eyebrow">венчање</p>
   <h1 class="hero-names">
     <span data-t="name1">Милан</span>
-    <span class="hero-amp">&</span>
+    <span class="hero-amp" data-t="amp">и</span>
     <span data-t="name2">Нина</span>
   </h1>
   <div class="hero-rule"></div>
@@ -577,9 +578,9 @@
 
     <form class="rsvp-form reveal d1" id="rsvpForm" novalidate>
       <div class="fg">
-        <label class="fl" data-t="nameL">Ime и презиме</label>
+        <label class="fl" data-t="nameL">Име и презиме</label>
         <input class="fi" type="text" name="name" required
-               data-ph="namePh" placeholder="Ваше пуно ime">
+               data-ph="namePh" placeholder="Ваше пуно име">
       </div>
 
       <div class="fg">
@@ -597,8 +598,8 @@
       </div>
 
       <div class="fg" id="guestsRow">
-        <label class="fl" data-t="guestL">Број гостију</label>
-        <select class="fs" name="guests">
+        <label class="fl" for="guests-select" data-t="guestL">Број гостију</label>
+        <select class="fs" id="guests-select" name="guests">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -633,7 +634,7 @@
 
 <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
 <footer>
-  <p class="footer-names" data-t="footerNames">Милан &amp; Нина</p>
+  <p class="footer-names" data-t="footerNames">Милан и Нина</p>
   <p class="footer-sub"   data-t="footerSub">2025</p>
 </footer>
 
@@ -668,7 +669,7 @@ const T = {
     rsvpLabel:  'RSVP',
     rsvpTitle:  'Потврда доласка',
     rsvpDl:     'Молимо потврдите долазак до <strong>' + CONFIG.rsvpDeadline + '</strong>',
-    nameL:      'Ime и презиме',          namePh:  'Ваше пуно ime',
+    nameL:      'Име и презиме',          namePh:  'Ваше пуно име',
     attL:       'Долазите?',
     attYes:     'Да, долазим ✓',          attNo:   'Нажалост, не могу',
     guestL:     'Број гостију',
@@ -677,7 +678,8 @@ const T = {
     subBtn:     'Потврдите долазак',
     successMsg: 'Хвала! Ваша потврда је примљена.',
     successSub: 'Радујемо се вашем доласку!',
-    footerNames:'Милан & Нина',
+    amp: 'и',
+    footerNames:'Милан и Нина',
     footerSub:  '2025',
   },
   el: {
@@ -708,7 +710,8 @@ const T = {
     subBtn:     'Επιβεβαίωση παρουσίας',
     successMsg: 'Ευχαριστούμε! Η επιβεβαίωσή σας ελήφθη.',
     successSub: 'Ανυπομονούμε να σας δούμε!',
-    footerNames:'Μιλάν & Νίνα',
+    amp: 'και',
+    footerNames:'Μιλάν και Νίνα',
     footerSub:  '2025',
   }
 };

@@ -2,6 +2,7 @@ const http = require('http');
 const fs   = require('fs');
 const path = require('path');
 const url  = require('url');
+const zlib = require('zlib');
 
 const PORT = process.env.PORT || 7000;
 const DIR  = __dirname;
@@ -17,13 +18,22 @@ const MIME = {
   '.woff2':'font/woff2',
 };
 
-function serveFile(res, filePath) {
+function serveFile(res, filePath, req) {
   fs.readFile(filePath, (err, data) => {
     if (err) { res.writeHead(404); res.end('Not found'); return; }
     const ext  = path.extname(filePath);
     const mime = MIME[ext] || 'application/octet-stream';
-    res.writeHead(200, { 'Content-Type': mime });
-    res.end(data);
+    const acceptsGzip = (req.headers['accept-encoding'] || '').includes('gzip');
+    if (acceptsGzip && ['.html', '.css', '.js'].includes(ext)) {
+      zlib.gzip(data, (err, compressed) => {
+        if (err) { res.writeHead(200, {'Content-Type': mime}); res.end(data); return; }
+        res.writeHead(200, {'Content-Type': mime, 'Content-Encoding': 'gzip'});
+        res.end(compressed);
+      });
+    } else {
+      res.writeHead(200, { 'Content-Type': mime });
+      res.end(data);
+    }
   });
 }
 
@@ -98,8 +108,7 @@ function handleSubmissions(req, res) {
   const th = header.map(h => `<th>${h}</th>`).join('');
   const trs= rows.map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('');
 
-  res.writeHead(200, {'Content-Type':'text/html; charset=utf-8'});
-  res.end(`<!DOCTYPE html>
+  const htmlOut = `<!DOCTYPE html>
 <html lang="sr"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RSVP – Милан & Нина</title>
@@ -125,7 +134,22 @@ function handleSubmissions(req, res) {
 </div>
 ${rows.length ? `<table><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table>` : '<p style="font-style:italic;color:#7a6a58">Нема потврда.</p>'}
 <a class="btn" href="/data/submissions.csv">↓ Скини CSV</a>
-</body></html>`);
+</body></html>`;
+  const acceptsGzip = (req.headers['accept-encoding'] || '').includes('gzip');
+  if (acceptsGzip) {
+    zlib.gzip(Buffer.from(htmlOut, 'utf8'), (err, compressed) => {
+      if (err) {
+        res.writeHead(200, {'Content-Type':'text/html; charset=utf-8'});
+        res.end(htmlOut);
+        return;
+      }
+      res.writeHead(200, {'Content-Type':'text/html; charset=utf-8', 'Content-Encoding':'gzip'});
+      res.end(compressed);
+    });
+  } else {
+    res.writeHead(200, {'Content-Type':'text/html; charset=utf-8'});
+    res.end(htmlOut);
+  }
 }
 
 const server = http.createServer((req, res) => {
@@ -155,7 +179,7 @@ const server = http.createServer((req, res) => {
   let filePath = path.join(DIR, pathname === '/' ? 'index.html' : pathname);
   // security: prevent path traversal
   if (!filePath.startsWith(DIR)) { res.writeHead(403); res.end('Forbidden'); return; }
-  serveFile(res, filePath);
+  serveFile(res, filePath, req);
 });
 
 server.listen(PORT, '0.0.0.0', () => {
