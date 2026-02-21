@@ -740,9 +740,9 @@ function setLang(l) {
 
 // Init on load
 document.addEventListener('DOMContentLoaded', () => {
-  // URL param
+  // URL param — always apply translations so CONFIG values populate
   const p = new URLSearchParams(location.search);
-  if (p.get('lang') === 'el') setLang('el');
+  setLang(p.get('lang') === 'el' ? 'el' : 'sr');
 
   // Scroll reveal
   const obs = new IntersectionObserver(entries => {
