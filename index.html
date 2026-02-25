@@ -461,7 +461,7 @@
     }
     .success-box.show { display: block; }
     .success-box .glyph { display: block; font-size: 2rem; color: var(--gold); margin-bottom: 1rem; opacity: 0.7; }
-    .success-box p:first-of-type { font-size: 1.5rem; font-style: italic; color: var(--text-mid); }
+    .success-box p:last-of-type { font-size: 1.5rem; font-style: italic; color: var(--text-mid); }
     .success-box p.sub { font-size: 0.85rem; color: var(--text-muted); letter-spacing: 0.1em; margin-top: 0.75rem; font-style: normal; }
 
     /* ── FOOTER ──────────────────────────────────── */
@@ -702,9 +702,9 @@
     </form>
 
     <div class="success-box" id="successBox">
+      <p data-t="successSub">Хвала на одговору.</p>
       <span class="glyph">✦</span>
       <p data-t="successMsg">До скорог виђења!</p>
-      <p class="sub" data-t="successSub">Хвала на одговору.</p>
     </div>
   </div>
 </div>
