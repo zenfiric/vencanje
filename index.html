@@ -469,6 +469,18 @@
       background: var(--text);
       padding: 3.5rem 2rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer-flower {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.20;
+      pointer-events: none;
+      user-select: none;
     }
     .footer-names {
       color: var(--gold-light);
@@ -482,6 +494,18 @@
       font-size: 0.7rem;
       letter-spacing: 0.25em;
       text-transform: uppercase;
+    }
+
+    /* ── FLOWER OVERLAY ─────────────────────────── */
+    .hero-flower {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.20;
+      pointer-events: none;
+      user-select: none;
     }
 
     /* ── ANIMATIONS ──────────────────────────────── */
@@ -507,6 +531,43 @@
 </head>
 <body>
 
+<!-- DEV: flower picker — remove before deploy -->
+<div id="flower-picker" style="position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:9999;background:rgba(0,0,0,0.65);color:#fff;font:12px/1.5 monospace;padding:8px 14px;border-radius:6px;display:flex;align-items:center;gap:12px;backdrop-filter:blur(4px)">
+  <select id="fp-sel" style="background:#222;color:#fff;border:1px solid #555;padding:2px 6px;border-radius:3px;font:inherit;cursor:pointer">
+    <option value="">— без слике —</option>
+    <option value="/img/lale2_gold.png">lale2 (ружичасте)</option>
+    <option value="/img/lale_gold.png" selected>lale (наранџасте)</option>
+    <option value="/img/lale3_gold.png">lale3 (бордо)</option>
+    <option value="/img/svetionik_gold.png">светионик</option>
+  </select>
+  <label style="display:flex;align-items:center;gap:6px">
+    opacity
+    <input type="range" id="fp-op" min="0" max="50" value="20" style="width:100px;accent-color:#C19A6B">
+    <span id="fp-val">0.20</span>
+  </label>
+</div>
+<script>
+(function(){
+  function sync(){
+    var sel = document.getElementById('fp-sel');
+    var op  = document.getElementById('fp-op');
+    var val = document.getElementById('fp-val');
+    var opacity = op.value/100;
+    val.textContent = opacity.toFixed(2);
+    ['.hero-flower','.footer-flower'].forEach(function(cls){
+      var img = document.querySelector(cls);
+      if(!img) return;
+      if(sel.value){ img.src = sel.value; img.style.display=''; }
+      else { img.style.display='none'; }
+      img.style.opacity = opacity;
+    });
+  }
+  document.getElementById('fp-sel').addEventListener('change', sync);
+  document.getElementById('fp-op').addEventListener('input',  sync);
+  window.addEventListener('DOMContentLoaded', sync);
+})();
+</script>
+
 <!-- Language toggle -->
 <div class="lang-toggle">
   <button class="lang-btn active" onclick="setLang('sr')">СР</button>
@@ -527,6 +588,7 @@
   <p class="hero-date"  data-t="date">__.__.2025.</p>
   <p class="hero-venue" data-t="heroVenue">Место · Град</p>
   <span class="hero-scroll">↓</span>
+  <img class="hero-flower" src="/img/lale_gold.png" alt="">
 </div>
 
 <!-- ═══════════════════════════ QUOTE ═════════════════════════════ -->
@@ -627,21 +689,44 @@
         </div>
       </div>
 
-      <div class="fg" id="guestsRow">
-        <label class="fl" for="guests-select" data-t="guestL">Број гостију</label>
-        <select class="fs" id="guests-select" name="guests">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
+      <div class="fg" id="partnerRow">
+        <label class="fl" data-t="partnerL">Да ли долазите са вашом драгом особом?</label>
+        <div class="att-opts">
+          <div class="att-opt">
+            <input type="radio" name="partner" id="partner-yes" value="да">
+            <label for="partner-yes" data-t="partnerYes">Да ✓</label>
+          </div>
+          <div class="att-opt">
+            <input type="radio" name="partner" id="partner-no" value="не" checked>
+            <label for="partner-no" data-t="partnerNo">Не</label>
+          </div>
+        </div>
       </div>
 
-      <div class="fg">
-        <label class="fl" data-t="dietL">Алергије / посебни захтеви</label>
-        <input class="fi" type="text" name="dietary"
-               data-ph="dietPh" placeholder="Нпр. вегетаријанска исхрана...">
+      <div class="fg" id="partnerNameRow" style="display:none">
+        <label class="fl" data-t="partnerNameL">Упишите ime драге особе</label>
+        <input class="fi" type="text" name="partner_name"
+               data-ph="partnerNamePh" placeholder="Пуно ime и презиме">
+      </div>
+
+      <div class="fg" id="childrenRow">
+        <label class="fl" data-t="childrenL">Да ли долазите са децом?</label>
+        <div class="att-opts">
+          <div class="att-opt">
+            <input type="radio" name="children" id="children-yes" value="да">
+            <label for="children-yes" data-t="childrenYes">Да ✓</label>
+          </div>
+          <div class="att-opt">
+            <input type="radio" name="children" id="children-no" value="не" checked>
+            <label for="children-no" data-t="childrenNo">Не</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="fg" id="childrenDetailRow" style="display:none">
+        <label class="fl" data-t="childrenDetailL">Молим вас, упишите ime детета и узраст</label>
+        <input class="fi" type="text" name="children_detail"
+               data-ph="childrenDetailPh" placeholder="Нпр. Ана, 5 година">
       </div>
 
       <div class="fg">
@@ -664,6 +749,7 @@
 
 <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
 <footer>
+  <img class="footer-flower" src="/img/lale_gold.png" alt="">
   <p class="footer-names" data-t="footerNames">Милан и Нина</p>
   <p class="footer-sub"   data-t="footerSub">2026</p>
 </footer>
@@ -673,9 +759,9 @@
 const CONFIG = {
   date:         '19. април 2026.',
   venueName:    'Мезесторан Двориште',
-  venueAddr:    'Београд',
+  venueAddr:    'Светогорска 46, Београд',
   mapUrl:       'https://maps.google.com/?q=Mezestoran+Dvoriste+Beograd',
-  rsvpDeadline: '20. март 2026.',
+  rsvpDeadline: '20. марта 2026.',
 };
 // ────────────────────────────────────────────────────────────────
 
@@ -683,14 +769,14 @@ const T = {
   sr: {
     eyebrow:    'венчање',
     name1:      'Милан', name2: 'Нина',
-    date:       '19. април 2026.',
-    heroVenue:  'Црква Ружица · Калемегдан, Београд',
+    date:       '19. <em>априла</em> 2026.',
+    heroVenue:  'Црква Ружица · Калемегдан. Београд',
     quote:      '„Двоје постају једно, и тај тренутак траје заувек."',
     progLabel:  'Програм венчања',
     progTitle:  'Распоред дана',
-    ev1t: 'Окупљање',       ev1d: 'Испред Цркве Ружице · 13:00&nbsp;–&nbsp;13:30', ev1loc: 'Мапа ↗',
+    ev1t: 'Окупљање',       ev1d: 'Испред Цркве Ружице, 13:00&nbsp;–&nbsp;13:30', ev1loc: 'Мапа ↗',
     ev2t: 'Венчање',        ev2d: 'Црква Ружица',                       ev2loc: 'Мапа ↗',
-    ev3t: 'Свечани ручак',  ev3d: 'Мезесторан Двориште · 15:00&nbsp;–&nbsp;18:00',  ev3loc: 'Мапа ↗',
+    ev3t: 'Свечани ручак',  ev3d: 'Мезесторан Двориште, 15:00&nbsp;–&nbsp;18:00',  ev3loc: 'Мапа ↗',
     locLabel:   'Локација',
     locTitle:   'Место прославе',
     venueName:  CONFIG.venueName,
@@ -702,8 +788,13 @@ const T = {
     nameL:      'Име и презиме',          namePh:  'Ваше пуно име',
     attL:       'Долазите?',
     attYes:     'Да, долазим ✓',          attNo:   'Нажалост, не могу',
-    guestL:     'Број гостију',
-    dietL:      'Алергије / посебни захтеви', dietPh: 'Нпр. вегетаријанска исхрана...',
+    partnerL:    'Да ли долазите са вашом драгом особом?',
+    partnerYes:  'Да ✓', partnerNo: 'Не',
+    partnerNameL:'Упишите ime драге особе', partnerNamePh: 'Пуно ime и презиме',
+    childrenL:   'Да ли долазите са децом?',
+    childrenYes: 'Да ✓', childrenNo: 'Не',
+    childrenDetailL:  'Молим вас, упишите ime детета и узраст',
+    childrenDetailPh: 'Нпр. Ана, 5 година',
     msgL:       'Порука младенцима',       msgPh:  'Опционо...',
     subBtn:     'Потврдите долазак',
     successMsg: 'Хвала! Ваша потврда је примљена.',
@@ -715,14 +806,14 @@ const T = {
   el: {
     eyebrow:    'γάμος',
     name1:      'Μιλάν', name2: 'Νίνα',
-    date:       '19. Απριλίου 2026.',
-    heroVenue:  'Εκκλησία Ρούζιτσα · Καλεμέγκνταν, Βελιγράδι',
+    date:       '19. <em>Απριλίου</em> 2026.',
+    heroVenue:  'Εκκλησία Ρούζιτσα · Καλεμέγκνταν. Βελιγράδι',
     quote:      '«Δύο γίνονται ένα, και εκείνη η στιγμή κρατά για πάντα.»',
     progLabel:  'Πρόγραμμα γάμου',
     progTitle:  'Πρόγραμμα ημέρας',
-    ev1t: 'Συγκέντρωση', ev1d: 'Μπροστά στην Εκκλησία Ρούζιτσα · 13:00&nbsp;–&nbsp;13:30', ev1loc: 'Χάρτης ↗',
+    ev1t: 'Συγκέντρωση', ev1d: 'Μπροστά στην Εκκλησία Ρούζιτσα, 13:00&nbsp;–&nbsp;13:30', ev1loc: 'Χάρτης ↗',
     ev2t: 'Τελετή',           ev2d: 'Εκκλησία Ρούζιτσα',                                  ev2loc: 'Χάρτης ↗',
-    ev3t: 'Εορταστικό γεύμα', ev3d: 'Μεζεστοράν Ντβόριστε · 15:00&nbsp;–&nbsp;18:00',                ev3loc: 'Χάρτης ↗',
+    ev3t: 'Εορταστικό γεύμα', ev3d: 'Μεζεστοράν Ντβόριστε, 15:00&nbsp;–&nbsp;18:00',                ev3loc: 'Χάρτης ↗',
     locLabel:   'Τοποθεσία',
     locTitle:   'Χώρος εορτασμού',
     venueName:  CONFIG.venueName,
@@ -734,8 +825,13 @@ const T = {
     nameL:      'Ονοματεπώνυμο',          namePh:  'Ονοματεπώνυμό σας',
     attL:       'Θα παραστείτε;',
     attYes:     'Ναι, θα παραστώ ✓',      attNo:   'Δυστυχώς, δεν μπορώ',
-    guestL:     'Αριθμός ατόμων',
-    dietL:      'Αλλεργίες / ειδικές απαιτήσεις', dietPh: 'Π.χ. χορτοφαγική διατροφή...',
+    partnerL:    'Θα έρθετε με τον/την σύντροφό σας;',
+    partnerYes:  'Ναι ✓', partnerNo: 'Όχι',
+    partnerNameL:'Συμπληρώστε το όνομα του/της συντρόφου', partnerNamePh: 'Ονοματεπώνυμο',
+    childrenL:   'Θα έρθετε με παιδιά;',
+    childrenYes: 'Ναι ✓', childrenNo: 'Όχι',
+    childrenDetailL:  'Παρακαλούμε αναφέρετε όνομα και ηλικία',
+    childrenDetailPh: 'Π.χ. Άννα, 5 χρονών',
     msgL:       'Μήνυμα στους νεόνυμφους', msgPh: 'Προαιρετικό...',
     subBtn:     'Επιβεβαίωση παρουσίας',
     successMsg: 'Ευχαριστούμε! Η επιβεβαίωσή σας ελήφθη.',
@@ -783,12 +879,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  // Hide guests row when "not attending" selected
-  document.querySelectorAll('input[name="attending"]').forEach(r => {
+  // Hide partner/children rows when "not attending"
+  function toggleAttendingRows() {
+    const notComing = ['не','Όχι'].includes(document.querySelector('input[name="attending"]:checked')?.value);
+    ['partnerRow','partnerNameRow','childrenRow','childrenDetailRow'].forEach(id => {
+      document.getElementById(id).style.display = notComing ? 'none' : '';
+    });
+    if (notComing) {
+      document.getElementById('partnerNameRow').style.display = 'none';
+      document.getElementById('childrenDetailRow').style.display = 'none';
+    }
+  }
+  document.querySelectorAll('input[name="attending"]').forEach(r =>
+    r.addEventListener('change', toggleAttendingRows)
+  );
+
+  // Show/hide partner name field
+  document.querySelectorAll('input[name="partner"]').forEach(r => {
     r.addEventListener('change', () => {
-      document.getElementById('guestsRow').style.display =
-        document.querySelector('input[name="attending"]:checked').value === 'не' ||
-        document.querySelector('input[name="attending"]:checked').value === 'Όχι' ? 'none' : '';
+      document.getElementById('partnerNameRow').style.display =
+        document.querySelector('input[name="partner"]:checked').value === 'не' ||
+        document.querySelector('input[name="partner"]:checked').value === 'Όχι' ? 'none' : '';
+    });
+  });
+
+  // Show/hide children detail field
+  document.querySelectorAll('input[name="children"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('childrenDetailRow').style.display =
+        document.querySelector('input[name="children"]:checked').value === 'не' ||
+        document.querySelector('input[name="children"]:checked').value === 'Όχι' ? 'none' : '';
     });
   });
 
@@ -808,13 +928,16 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.disabled = true;
     err.classList.remove('err');
 
+    const notComing = ['не','Όχι'].includes(form.attending.value);
     const payload = {
-      name:      form.name.value.trim(),
-      attending: form.attending.value,
-      guests:    form.attending.value === 'не' || form.attending.value === 'Όχι' ? 0 : parseInt(form.guests.value),
-      dietary:   form.dietary.value.trim(),
-      message:   form.message.value.trim(),
-      lang:      lang,
+      name:           form.name.value.trim(),
+      attending:      form.attending.value,
+      partner:        notComing ? '' : form.partner.value,
+      partner_name:   notComing ? '' : (form.partner_name?.value.trim() || ''),
+      children:       notComing ? '' : form.children.value,
+      children_detail:notComing ? '' : (form.children_detail?.value.trim() || ''),
+      message:        form.message.value.trim(),
+      lang:           lang,
     };
 
     try {

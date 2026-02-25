@@ -44,11 +44,14 @@ function handleRsvp(req, res) {
     let data;
     try { data = JSON.parse(body); } catch { data = {}; }
 
-    const name     = String(data.name     || '').trim().replace(/[\r\n]/g, ' ');
-    const attending= String(data.attending|| '').trim();
-    const guests   = Math.max(0, parseInt(data.guests) || 0);
-    const dietary  = String(data.dietary  || '').trim().replace(/[\r\n]/g, ' ');
-    const message  = String(data.message  || '').trim().replace(/[\r\n]/g, ' ');
+    const clean    = v => String(v || '').trim().replace(/[\r\n]/g, ' ');
+    const name          = clean(data.name);
+    const attending     = clean(data.attending);
+    const partner       = clean(data.partner);
+    const partner_name  = clean(data.partner_name);
+    const children      = clean(data.children);
+    const children_detail = clean(data.children_detail);
+    const message       = clean(data.message);
     const lang     = ['sr','el'].includes(data.lang) ? data.lang : 'sr';
     const ts       = new Date().toISOString().replace('T',' ').slice(0,19);
     const ip       = req.socket.remoteAddress || '';
@@ -63,11 +66,11 @@ function handleRsvp(req, res) {
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
     const newFile = !fs.existsSync(CSV);
-    const csvLine = [ts, name, attending, guests, dietary, message, lang, ip]
+    const csvLine = [ts, name, attending, partner, partner_name, children, children_detail, message, lang, ip]
       .map(v => `"${String(v).replace(/"/g,'""')}"`).join(',') + '\n';
 
     if (newFile) {
-      fs.writeFileSync(CSV, '"Timestamp","Ime","Prisustvo","Br. gostiju","Dijeta/Alergije","Poruka","Jezik","IP"\n');
+      fs.writeFileSync(CSV, '"Timestamp","Ime","Prisustvo","Sa partnerom","Ime partnera","Sa decom","Deca (ime/uzrast)","Poruka","Jezik","IP"\n');
     }
     fs.appendFileSync(CSV, csvLine);
 
@@ -99,10 +102,14 @@ function handleSubmissions(req, res) {
   const header= parse(lines[0]);
   const rows  = lines.slice(1).reverse().map(parse);
 
-  let attending=0, guests=0;
+  let attending=0, withPartner=0, withChildren=0;
   rows.forEach(r => {
     const a = (r[2]||'').toLowerCase();
-    if (a.includes('да') || a.includes('ναι')) { attending++; guests += parseInt(r[3])||0; }
+    if (a.includes('да') || a.includes('ναι')) {
+      attending++;
+      if ((r[3]||'').toLowerCase().includes('да') || (r[3]||'').toLowerCase().includes('ναι')) withPartner++;
+      if ((r[5]||'').toLowerCase().includes('да') || (r[5]||'').toLowerCase().includes('ναι')) withChildren++;
+    }
   });
 
   const th = header.map(h => `<th>${h}</th>`).join('');
@@ -130,7 +137,8 @@ function handleSubmissions(req, res) {
 <div class="stats">
   <div class="stat"><div class="sn">${rows.length}</div><div class="sl">Одговора</div></div>
   <div class="stat"><div class="sn">${attending}</div><div class="sl">Долазе</div></div>
-  <div class="stat"><div class="sn">${guests}</div><div class="sl">Гостију</div></div>
+  <div class="stat"><div class="sn">${withPartner}</div><div class="sl">Са партнером</div></div>
+  <div class="stat"><div class="sn">${withChildren}</div><div class="sl">Са децом</div></div>
 </div>
 ${rows.length ? `<table><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table>` : '<p style="font-style:italic;color:#7a6a58">Нема потврда.</p>'}
 <a class="btn" href="/data/submissions.csv">↓ Скини CSV</a>
