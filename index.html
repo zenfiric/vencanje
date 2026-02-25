@@ -531,43 +531,6 @@
 </head>
 <body>
 
-<!-- DEV: flower picker — remove before deploy -->
-<div id="flower-picker" style="position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:9999;background:rgba(0,0,0,0.65);color:#fff;font:12px/1.5 monospace;padding:8px 14px;border-radius:6px;display:flex;align-items:center;gap:12px;backdrop-filter:blur(4px)">
-  <select id="fp-sel" style="background:#222;color:#fff;border:1px solid #555;padding:2px 6px;border-radius:3px;font:inherit;cursor:pointer">
-    <option value="">— без слике —</option>
-    <option value="/img/lale2_gold.png">lale2 (ружичасте)</option>
-    <option value="/img/lale_gold.png" selected>lale (наранџасте)</option>
-    <option value="/img/lale3_gold.png">lale3 (бордо)</option>
-    <option value="/img/svetionik_gold.png">светионик</option>
-  </select>
-  <label style="display:flex;align-items:center;gap:6px">
-    opacity
-    <input type="range" id="fp-op" min="0" max="50" value="20" style="width:100px;accent-color:#C19A6B">
-    <span id="fp-val">0.20</span>
-  </label>
-</div>
-<script>
-(function(){
-  function sync(){
-    var sel = document.getElementById('fp-sel');
-    var op  = document.getElementById('fp-op');
-    var val = document.getElementById('fp-val');
-    var opacity = op.value/100;
-    val.textContent = opacity.toFixed(2);
-    ['.hero-flower','.footer-flower'].forEach(function(cls){
-      var img = document.querySelector(cls);
-      if(!img) return;
-      if(sel.value){ img.src = sel.value; img.style.display=''; }
-      else { img.style.display='none'; }
-      img.style.opacity = opacity;
-    });
-  }
-  document.getElementById('fp-sel').addEventListener('change', sync);
-  document.getElementById('fp-op').addEventListener('input',  sync);
-  window.addEventListener('DOMContentLoaded', sync);
-})();
-</script>
-
 <!-- Language toggle -->
 <div class="lang-toggle">
   <button class="lang-btn active" onclick="setLang('sr')">СР</button>
@@ -770,7 +733,7 @@ const T = {
     eyebrow:    'венчање',
     name1:      'Милан', name2: 'Нина',
     date:       '19. <em>априла</em> 2026.',
-    heroVenue:  'Црква Ружица · Калемегдан. Београд',
+    heroVenue:  'Црква Ружица · Калемегдан · Београд',
     quote:      '„Двоје постају једно, и тај тренутак траје заувек."',
     progLabel:  'Програм венчања',
     progTitle:  'Распоред дана',
@@ -807,7 +770,7 @@ const T = {
     eyebrow:    'γάμος',
     name1:      'Μιλάν', name2: 'Νίνα',
     date:       '19. <em>Απριλίου</em> 2026.',
-    heroVenue:  'Εκκλησία Ρούζιτσα · Καλεμέγκνταν. Βελιγράδι',
+    heroVenue:  'Εκκλησία Ρούζιτσα · Καλεμέγκνταν · Βελιγράδι',
     quote:      '«Δύο γίνονται ένα, και εκείνη η στιγμή κρατά για πάντα.»',
     progLabel:  'Πρόγραμμα γάμου',
     progTitle:  'Πρόγραμμα ημέρας',
