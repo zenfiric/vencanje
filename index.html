@@ -12,6 +12,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYrXtKky2F7i6C.woff2">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet">
 
@@ -477,10 +479,16 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      opacity: 0.20;
+      display: block;
       pointer-events: none;
       user-select: none;
+    }
+    .footer-flower img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.20;
+      display: block;
     }
     .footer-names {
       color: var(--gold-light);
@@ -502,10 +510,16 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      opacity: 0.20;
+      display: block;
       pointer-events: none;
       user-select: none;
+    }
+    .hero-flower img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.20;
+      display: block;
     }
 
     /* ── ANIMATIONS ──────────────────────────────── */
@@ -552,7 +566,10 @@
   <p class="hero-date"  data-t="date">19. <em>април</em> 2026.</p>
   <p class="hero-venue" data-t="heroVenue">Црква Ружица · Калемегдан · Београд</p>
   <span class="hero-scroll">↓</span>
-  <img class="hero-flower" src="/img/lale_gold.png" alt="">
+  <picture class="hero-flower">
+    <source srcset="/img/lale_gold.webp" type="image/webp">
+    <img src="/img/lale_gold.png" alt="" fetchpriority="low">
+  </picture>
 </div>
 
 <!-- ═══════════════════════════ QUOTE ═════════════════════════════ -->
@@ -712,7 +729,10 @@
 
 <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
 <footer>
-  <img class="footer-flower" src="/img/lale_gold.png" alt="">
+  <picture class="footer-flower">
+    <source srcset="/img/lale_gold.webp" type="image/webp">
+    <img src="/img/lale_gold.png" alt="" loading="lazy">
+  </picture>
   <p class="footer-names" data-t="footerNames">Милан и Нина</p>
   <p class="footer-sub"   data-t="footerSub">2026</p>
 </footer>
