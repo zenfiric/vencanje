@@ -436,24 +436,39 @@
     }
     .att-opt label:hover:not(.checked) { border-color: var(--gold); }
 
-    .child-row { display: flex; gap: 0.5rem; align-items: stretch; }
     .child-row + .child-row { margin-top: 0.5rem; }
-    .child-row .fi { flex: 1; min-width: 0; width: auto; }
-    .child-rm, .child-add {
-      flex-shrink: 0;
-      width: 2.75rem;
+    .child-field {
+      display: flex;
       border: 1px solid var(--border);
       background: white;
+      transition: border-color 0.25s;
+    }
+    .child-field:focus-within { border-color: var(--gold); }
+    .child-input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+      padding: 0.85rem 1rem;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1rem;
+      color: var(--text);
+      outline: none;
+    }
+    .child-btn {
+      flex-shrink: 0;
+      width: 2.5rem;
+      border: none;
+      border-left: 1px solid var(--border);
+      background: transparent;
       color: var(--text-muted);
       font-size: 1.3rem;
       line-height: 1;
       cursor: pointer;
       padding: 0;
-      transition: border-color 0.2s, color 0.2s;
+      transition: color 0.2s;
     }
-    .child-rm:hover { border-color: #b33; color: #b33; }
-    .child-add { color: var(--gold); margin-top: 0.5rem; align-self: flex-start; height: 2.75rem; }
-    .child-add:hover { border-color: var(--gold); background: var(--gold); color: white; }
+    .child-btn:hover { color: var(--gold); }
 
     .sub-btn {
       background: var(--olive-dark);
@@ -726,11 +741,12 @@
         <label class="fl" data-t="childrenDetailL">Молим вас, упишите ime детета и узраст</label>
         <div id="childrenList">
           <div class="child-row">
-            <input class="fi child-input" type="text" data-ph="childrenDetailPh" placeholder="Нпр. Ана, 5 година">
-            <button type="button" class="child-rm" onclick="rmChild(this)" tabindex="-1" style="visibility:hidden">×</button>
+            <div class="child-field">
+              <input class="child-input" type="text" data-ph="childrenDetailPh" placeholder="Нпр. Ана, 5 година">
+              <button type="button" class="child-btn" onclick="addChild()" tabindex="-1">+</button>
+            </div>
           </div>
         </div>
-        <button type="button" class="child-add" onclick="addChild()" tabindex="-1">+</button>
       </div>
 
       <div class="fg">
@@ -764,6 +780,31 @@
 <script>
 let T = {};
 let lang = 'sr';
+
+function syncChildBtns() {
+  const rows = [...document.querySelectorAll('#childrenList .child-row')];
+  rows.forEach((row, i) => {
+    const btn = row.querySelector('.child-btn');
+    const isLast = i === rows.length - 1;
+    btn.textContent = isLast ? '+' : '×';
+    btn.onclick = isLast ? addChild : () => rmChild(btn);
+  });
+}
+
+function addChild() {
+  const ph = T[lang]?.childrenDetailPh || 'Нпр. Ана, 5 година';
+  const row = document.createElement('div');
+  row.className = 'child-row';
+  row.innerHTML = `<div class="child-field"><input class="child-input" type="text" data-ph="childrenDetailPh" placeholder="${ph}"><button type="button" class="child-btn" tabindex="-1">+</button></div>`;
+  document.getElementById('childrenList').appendChild(row);
+  syncChildBtns();
+  row.querySelector('input').focus();
+}
+
+function rmChild(btn) {
+  btn.closest('.child-row').remove();
+  syncChildBtns();
+}
 
 function setLang(l) {
   if (!T[l]) return;
@@ -832,28 +873,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  function syncChildRm() {
-    const rows = document.querySelectorAll('#childrenList .child-row');
-    rows.forEach(row => {
-      row.querySelector('.child-rm').style.visibility = rows.length > 1 ? 'visible' : 'hidden';
-    });
-  }
-
-  function addChild() {
-    const list = document.getElementById('childrenList');
-    const ph = T[lang]?.childrenDetailPh || 'Нпр. Ана, 5 година';
-    const row = document.createElement('div');
-    row.className = 'child-row';
-    row.innerHTML = `<input class="fi child-input" type="text" data-ph="childrenDetailPh" placeholder="${ph}"><button type="button" class="child-rm" onclick="rmChild(this)" tabindex="-1">×</button>`;
-    list.appendChild(row);
-    syncChildRm();
-    row.querySelector('input').focus();
-  }
-
-  function rmChild(btn) {
-    btn.closest('.child-row').remove();
-    syncChildRm();
-  }
 
   // RSVP submit
   document.getElementById('rsvpForm').addEventListener('submit', async e => {
