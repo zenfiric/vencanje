@@ -75,6 +75,14 @@ function handleRsvp(req, res) {
     }
     fs.appendFileSync(CSV, csvLine);
 
+    // Mirror to Google Sheets
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxHnEf9wHibhWjyagr2dOD322VbaaVOGrZgCEsZleYWTEE5esxpwxsGdrrUlS8l94Zt4w/exec';
+    fetch(SHEET_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ timestamp: ts, name, attending, partner, partner_name, children, children_detail, message, lang, ip }),
+    }).catch(err => console.error('Sheets sync failed:', err.message));
+
     res.writeHead(200, {'Content-Type':'application/json'});
     res.end(JSON.stringify({ok:true}));
   });
