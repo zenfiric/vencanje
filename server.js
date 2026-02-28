@@ -63,24 +63,42 @@ function handleRsvp(req, res) {
       return;
     }
 
+    // Build one row per person
+    const rows = [];
+    if (attending === 'да') {
+      rows.push({ ts, name, tip: 'Гост', message, lang, ip });
+      if (partner === 'да') {
+        const pName = partner_name || `${name} партнер`;
+        rows.push({ ts, name: pName, tip: 'Партнер', message: '', lang, ip });
+      }
+      if (children === 'да' && children_detail) {
+        children_detail.split(/[;\n]+/).map(s => s.trim()).filter(Boolean).forEach(child => {
+          rows.push({ ts, name: child, tip: 'Дете', message: '', lang, ip });
+        });
+      }
+    } else {
+      rows.push({ ts, name, tip: 'Не долази', message, lang, ip });
+    }
+
     const dataDir = path.join(DIR, 'data');
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
     const newFile = !fs.existsSync(CSV);
-    const csvLine = [ts, name, attending, partner, partner_name, children, children_detail, message, lang, ip]
-      .map(v => `"${String(v).replace(/"/g,'""')}"`).join(',') + '\n';
-
     if (newFile) {
-      fs.writeFileSync(CSV, '"Timestamp","Ime","Prisustvo","Sa partnerom","Ime partnera","Sa decom","Deca (ime/uzrast)","Poruka","Jezik","IP"\n');
+      fs.writeFileSync(CSV, '"Timestamp","Ime","Tip","Poruka","Jezik","IP"\n');
     }
-    fs.appendFileSync(CSV, csvLine);
+    rows.forEach(r => {
+      const line = [r.ts, r.name, r.tip, r.message, r.lang, r.ip]
+        .map(v => `"${String(v).replace(/"/g,'""')}"`).join(',') + '\n';
+      fs.appendFileSync(CSV, line);
+    });
 
-    // Mirror to Google Sheets
+    // Mirror to Google Sheets (send all rows in one request)
     const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxHnEf9wHibhWjyagr2dOD322VbaaVOGrZgCEsZleYWTEE5esxpwxsGdrrUlS8l94Zt4w/exec';
     fetch(SHEET_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ timestamp: ts, name, attending, partner, partner_name, children, children_detail, message, lang, ip }),
+      body: JSON.stringify(rows.map(r => ({ timestamp: r.ts, name: r.name, tip: r.tip, message: r.message, lang: r.lang, ip: r.ip }))),
     }).catch(err => console.error('Sheets sync failed:', err.message));
 
     res.writeHead(200, {'Content-Type':'application/json'});
@@ -111,14 +129,13 @@ function handleSubmissions(req, res) {
   const header= parse(lines[0]);
   const rows  = lines.slice(1).reverse().map(parse);
 
-  let attending=0, withPartner=0, withChildren=0;
+  let guests=0, partners=0, children=0, notComing=0;
   rows.forEach(r => {
-    const a = (r[2]||'').toLowerCase();
-    if (a.includes('да') || a.includes('ναι')) {
-      attending++;
-      if ((r[3]||'').toLowerCase().includes('да') || (r[3]||'').toLowerCase().includes('ναι')) withPartner++;
-      if ((r[5]||'').toLowerCase().includes('да') || (r[5]||'').toLowerCase().includes('ναι')) withChildren++;
-    }
+    const tip = (r[2]||'').trim();
+    if (tip === 'Гост')      guests++;
+    else if (tip === 'Партнер') partners++;
+    else if (tip === 'Дете')    children++;
+    else if (tip === 'Не долази') notComing++;
   });
 
   const th = header.map(h => `<th>${h}</th>`).join('');
@@ -142,11 +159,13 @@ function handleSubmissions(req, res) {
   a.btn{display:inline-block;margin-top:1.5rem;padding:.6rem 1.5rem;background:#2e3b1f;color:#d4b896;text-decoration:none;font-size:.75rem;letter-spacing:.2em}
 </style></head><body>
 <h1>Милан &amp; Нина — RSVP</h1>
-<p style="color:#7a6a58;font-size:.85rem">Укупно одговора: ${rows.length}</p>
+<p style="color:#7a6a58;font-size:.85rem">Укупно особа: ${guests+partners+children}</p>
 <div class="stats">
-  <div class="stat"><div class="sn">${rows.length}</div><div class="sl">Одговора</div></div>
-  <div class="stat"><div class="sn">${attending}</div><div class="sl">Долазе</div></div>
-  <div class="stat"><div class="sn">${withPartner}</div><div class="sl">Са партнером</div></div>
+  <div class="stat"><div class="sn">${guests+partners+children}</div><div class="sl">Долазе</div></div>
+  <div class="stat"><div class="sn">${guests}</div><div class="sl">Гостију</div></div>
+  <div class="stat"><div class="sn">${partners}</div><div class="sl">Партнера</div></div>
+  <div class="stat"><div class="sn">${children}</div><div class="sl">Деце</div></div>
+  <div class="stat"><div class="sn">${notComing}</div><div class="sl">Не долазе</div></div>
   <div class="stat"><div class="sn">${withChildren}</div><div class="sl">Са децом</div></div>
 </div>
 ${rows.length ? `<table><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table>` : '<p style="font-style:italic;color:#7a6a58">Нема потврда.</p>'}
