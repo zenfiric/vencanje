@@ -436,6 +436,25 @@
     }
     .att-opt label:hover:not(.checked) { border-color: var(--gold); }
 
+    .child-row { display: flex; gap: 0.5rem; align-items: stretch; }
+    .child-row + .child-row { margin-top: 0.5rem; }
+    .child-row .fi { flex: 1; min-width: 0; width: auto; }
+    .child-rm, .child-add {
+      flex-shrink: 0;
+      width: 2.75rem;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text-muted);
+      font-size: 1.3rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .child-rm:hover { border-color: #b33; color: #b33; }
+    .child-add { color: var(--gold); margin-top: 0.5rem; align-self: flex-start; height: 2.75rem; }
+    .child-add:hover { border-color: var(--gold); background: var(--gold); color: white; }
+
     .sub-btn {
       background: var(--olive-dark);
       color: var(--cream);
@@ -704,9 +723,14 @@
       </div>
 
       <div class="fg" id="childrenDetailRow" style="display:none">
-        <label class="fl" data-t="childrenDetailL">Молим вас, упишите име детета и узраст</label>
-        <input class="fi" type="text" name="children_detail"
-               data-ph="childrenDetailPh" placeholder="Нпр. Ана, 5 година">
+        <label class="fl" data-t="childrenDetailL">Молим вас, упишите ime детета и узраст</label>
+        <div id="childrenList">
+          <div class="child-row">
+            <input class="fi child-input" type="text" data-ph="childrenDetailPh" placeholder="Нпр. Ана, 5 година">
+            <button type="button" class="child-rm" onclick="rmChild(this)" tabindex="-1" style="visibility:hidden">×</button>
+          </div>
+        </div>
+        <button type="button" class="child-add" onclick="addChild()" tabindex="-1">+</button>
       </div>
 
       <div class="fg">
@@ -803,10 +827,33 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show/hide children detail field
   document.querySelectorAll('input[name="children"]').forEach(r => {
     r.addEventListener('change', () => {
-      document.getElementById('childrenDetailRow').style.display =
-        document.querySelector('input[name="children"]:checked').value === 'да' ? '' : 'none';
+      const show = document.querySelector('input[name="children"]:checked').value === 'да';
+      document.getElementById('childrenDetailRow').style.display = show ? '' : 'none';
     });
   });
+
+  function syncChildRm() {
+    const rows = document.querySelectorAll('#childrenList .child-row');
+    rows.forEach(row => {
+      row.querySelector('.child-rm').style.visibility = rows.length > 1 ? 'visible' : 'hidden';
+    });
+  }
+
+  function addChild() {
+    const list = document.getElementById('childrenList');
+    const ph = T[lang]?.childrenDetailPh || 'Нпр. Ана, 5 година';
+    const row = document.createElement('div');
+    row.className = 'child-row';
+    row.innerHTML = `<input class="fi child-input" type="text" data-ph="childrenDetailPh" placeholder="${ph}"><button type="button" class="child-rm" onclick="rmChild(this)" tabindex="-1">×</button>`;
+    list.appendChild(row);
+    syncChildRm();
+    row.querySelector('input').focus();
+  }
+
+  function rmChild(btn) {
+    btn.closest('.child-row').remove();
+    syncChildRm();
+  }
 
   // RSVP submit
   document.getElementById('rsvpForm').addEventListener('submit', async e => {
@@ -831,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
       partner:        notComing ? '' : form.partner.value,
       partner_name:   notComing ? '' : (form.partner_name?.value.trim() || ''),
       children:       notComing ? '' : form.children.value,
-      children_detail:notComing ? '' : (form.children_detail?.value.trim() || ''),
+      children_detail:notComing ? '' : [...document.querySelectorAll('#childrenList .child-input')].map(i => i.value.trim()).filter(Boolean).join(';'),
       message:        form.message.value.trim(),
       lang:           lang,
     };
