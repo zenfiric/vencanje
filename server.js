@@ -94,7 +94,7 @@ function handleRsvp(req, res) {
     });
 
     // Mirror to Google Sheets (send all rows in one request)
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxHnEf9wHibhWjyagr2dOD322VbaaVOGrZgCEsZleYWTEE5esxpwxsGdrrUlS8l94Zt4w/exec';
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwCNUQk53L6KUcoBiK8Ax3nH9IjY8_xU245a-tyr2s4NW2R63HYmuBqzJYEOvMmBpIAEA/exec';
     fetch(SHEET_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
