@@ -16,6 +16,7 @@ const MIME = {
   '.png':  'image/png',
   '.jpg':  'image/jpeg',
   '.woff2':'font/woff2',
+  '.json': 'application/json',
 };
 
 function serveFile(res, filePath, req) {
