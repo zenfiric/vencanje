@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Карте за столове — Милан и Нина</title>
+  <title>Картице — Милан и Нина</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet">
 
   <style>
-    /* ── DESIGN TOKENS (matching main site) ─────────────────── */
     :root {
       --gold:       #C19A6B;
       --gold-light: #D4B896;
@@ -33,7 +32,7 @@
       color: var(--text);
     }
 
-    /* ── SCREEN CONTROLS (hidden when printing) ─────────────── */
+    /* ── CONTROLS ───────────────────────────────────────────── */
     .controls {
       padding: 2rem;
       text-align: center;
@@ -72,7 +71,7 @@
       color: var(--olive-dark);
     }
 
-    /* ── PAGE LAYOUT ────────────────────────────────────────── */
+    /* ── PAGE ───────────────────────────────────────────────── */
     .page {
       width: 210mm;
       min-height: 297mm;
@@ -81,25 +80,18 @@
       padding: 10mm;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: repeat(4, auto);
       gap: 0;
       align-content: start;
     }
 
-    /* ── TENT CARD ───────────────────────────────────────────── */
-    /*
-      Each card is 90mm wide × 60mm tall.
-      Fold along the horizontal midline (at 30mm from top).
-      Top half = back face (upside-down decoration).
-      Bottom half = front face (guest name + table).
-      Cut along the outer dashed lines, fold on the center line.
-    */
+    /* ── TENT CARD ──────────────────────────────────────────── */
+    /* 90mm × 60mm — fold at midpoint (30mm from top)
+       Top half: back face (upside-down)
+       Bottom half: front face (name + table) */
     .card-wrap {
       width: 90mm;
       height: 60mm;
       padding: 1.5mm;
-      position: relative;
-      /* cut marks */
       border: 0.3mm dashed #CCC;
     }
 
@@ -113,7 +105,7 @@
       flex-direction: column;
     }
 
-    /* Back half (top, upside-down) */
+    /* Back (upside-down top half) */
     .card-back {
       height: 50%;
       display: flex;
@@ -131,7 +123,6 @@
       bottom: 0; left: 0; right: 0;
       height: 0.3mm;
       background: var(--border);
-      /* fold line */
     }
     .back-ornament {
       color: var(--gold);
@@ -147,7 +138,7 @@
       font-weight: 300;
     }
 
-    /* Fold indicator */
+    /* Fold indicator (screen only) */
     .fold-line {
       position: absolute;
       left: 0; right: 0;
@@ -168,7 +159,7 @@
       letter-spacing: 0.1em;
     }
 
-    /* Front half (bottom) */
+    /* Front face */
     .card-front {
       height: 50%;
       display: flex;
@@ -179,8 +170,6 @@
       position: relative;
       gap: 1mm;
     }
-
-    /* Corner accents on front face */
     .card-front::before,
     .card-front::after {
       content: '';
@@ -190,14 +179,18 @@
       border-style: solid;
       opacity: 0.7;
     }
-    .card-front::before {
-      bottom: 1.5mm; left: 1.5mm;
-      border-width: 0 0 0.5mm 0.5mm;
+    .card-front::before { bottom: 1.5mm; left: 1.5mm; border-width: 0 0 0.5mm 0.5mm; }
+    .card-front::after  { bottom: 1.5mm; right: 1.5mm; border-width: 0 0.5mm 0.5mm 0; }
+
+    .corner-tl, .corner-tr {
+      position: absolute;
+      width: 4.5mm; height: 4.5mm;
+      border-color: var(--gold);
+      border-style: solid;
+      opacity: 0.5;
     }
-    .card-front::after {
-      bottom: 1.5mm; right: 1.5mm;
-      border-width: 0 0.5mm 0.5mm 0;
-    }
+    .corner-tl { top: 1mm; left: 1mm;  border-width: 0.4mm 0 0 0.4mm; }
+    .corner-tr { top: 1mm; right: 1mm; border-width: 0.4mm 0.4mm 0 0; }
 
     .guest-name {
       font-size: 16pt;
@@ -208,7 +201,8 @@
       text-align: center;
       letter-spacing: 0.01em;
     }
-    .guest-name.long { font-size: 13pt; }
+    .guest-name.long  { font-size: 13pt; }
+    .guest-name.vlong { font-size: 11pt; }
 
     .name-rule {
       width: 12mm; height: 0.3mm;
@@ -224,38 +218,13 @@
       font-weight: 300;
     }
 
-    /* Top corner accents (front face top edge) */
-    .corner-tl, .corner-tr {
-      position: absolute;
-      width: 4.5mm; height: 4.5mm;
-      border-color: var(--gold);
-      border-style: solid;
-      opacity: 0.5;
-    }
-    .corner-tl { top: 1mm; left: 1mm; border-width: 0.4mm 0 0 0.4mm; }
-    .corner-tr { top: 1mm; right: 1mm; border-width: 0.4mm 0.4mm 0 0; }
-
-    /* ── PRINT STYLES ───────────────────────────────────────── */
+    /* ── PRINT ──────────────────────────────────────────────── */
     @media print {
-      @page {
-        size: A4 portrait;
-        margin: 0;
-      }
-
+      @page { size: A4 portrait; margin: 0; }
       body { background: white; }
       .controls { display: none; }
-
-      .page {
-        margin: 0;
-        padding: 10mm;
-        page-break-after: always;
-        box-shadow: none;
-      }
-
-      .card-wrap {
-        border-color: #DDD;
-      }
-
+      .page { margin: 0; padding: 10mm; page-break-after: always; box-shadow: none; }
+      .card-wrap { border-color: #DDD; }
       .fold-label { display: none; }
     }
   </style>
@@ -263,7 +232,7 @@
 <body>
 
 <div class="controls">
-  <h1>Карте за столове · Милан и Нина · 19. April 2026.</h1>
+  <h1>Картице · Милан и Нина · 19. априла 2026.</h1>
   <p>Штампај на A4 · Исеци по испрекиданим линијама · Преломи по средњој линији</p>
   <button class="print-btn" onclick="window.print()">Штампај</button>
 </div>
@@ -271,93 +240,72 @@
 <div id="cards-container"></div>
 
 <script>
-  // ─────────────────────────────────────────────────────────
-  // GUEST LIST — edit this array to add / change guests
-  // table: 0  →  no table label shown  (e.g. for wedding couple)
-  // ─────────────────────────────────────────────────────────
-  const guests = [
-    // Сто 1
-    { name: "Нина Глуховић",       table: 1 },
-    { name: "Милан Јелисавчић",    table: 1 },
-
-    // Сто 2
-    { name: "Марија Петровић",     table: 2 },
-    { name: "Јован Петровић",      table: 2 },
-    { name: "Ана Николић",         table: 2 },
-    { name: "Лука Николић",        table: 2 },
-
-    // Сто 3
-    { name: "Биљана Стојановић",   table: 3 },
-    { name: "Драган Стојановић",   table: 3 },
-    { name: "Тамара Илић",         table: 3 },
-    { name: "Немања Илић",         table: 3 },
-
-    // Сто 4
-    { name: "Весна Ђорђевић",      table: 4 },
-    { name: "Зоран Ђорђевић",      table: 4 },
-    { name: "Сунчица Павловић",    table: 4 },
-    { name: "Миљан Павловић",      table: 4 },
-
-    // Сто 5
-    { name: "Александра Јовић",    table: 5 },
-    { name: "Стефан Јовић",        table: 5 },
-  ];
-
-  // ─────────────────────────────────────────────────────────
-  // Render cards — 8 per A4 page (2 cols × 4 rows)
-  // ─────────────────────────────────────────────────────────
   const CARDS_PER_PAGE = 8;
-  const container = document.getElementById('cards-container');
 
-  for (let i = 0; i < guests.length; i += CARDS_PER_PAGE) {
-    const page = document.createElement('div');
-    page.className = 'page';
+  function renderCards(guests) {
+    const container = document.getElementById('cards-container');
 
-    const slice = guests.slice(i, i + CARDS_PER_PAGE);
+    for (let i = 0; i < guests.length; i += CARDS_PER_PAGE) {
+      const page = document.createElement('div');
+      page.className = 'page';
+      const slice = guests.slice(i, i + CARDS_PER_PAGE);
 
-    slice.forEach(guest => {
-      const isLong = guest.name.length > 18;
-      const tableStr = guest.table
-        ? `Сто · ${guest.table} ·`
-        : '✦';
+      slice.forEach(guest => {
+        const len = guest.name.length;
+        const sizeClass = len > 24 ? ' vlong' : len > 18 ? ' long' : '';
+        const tableStr = guest.table ? `Сто · ${guest.table} ·` : '✦';
 
-      page.innerHTML += `
-        <div class="card-wrap">
+        const wrap = document.createElement('div');
+        wrap.className = 'card-wrap';
+        wrap.innerHTML = `
           <div class="card">
-
-            <!-- Back face (upside-down, visible from behind tent) -->
             <div class="card-back">
               <div class="back-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
               <div class="back-names">Милан &amp; Нина · 19. April 2026.</div>
             </div>
-
-            <!-- Fold indicator (screen only) -->
-            <div class="fold-line">
-              <span class="fold-label">— fold —</span>
-            </div>
-
-            <!-- Front face -->
+            <div class="fold-line"><span class="fold-label">— fold —</span></div>
             <div class="card-front">
               <div class="corner-tl"></div>
               <div class="corner-tr"></div>
-              <div class="guest-name${isLong ? ' long' : ''}">${guest.name}</div>
+              <div class="guest-name${sizeClass}">${guest.name}</div>
               <div class="name-rule"></div>
               <div class="table-label">${tableStr}</div>
             </div>
+          </div>`;
+        page.appendChild(wrap);
+      });
 
-          </div>
-        </div>
-      `;
-    });
+      // pad to even columns
+      if (slice.length % 2 !== 0) {
+        const spacer = document.createElement('div');
+        spacer.className = 'card-wrap';
+        spacer.style.visibility = 'hidden';
+        page.appendChild(spacer);
+      }
 
-    // Fill remaining slots with blank cards to keep grid alignment
-    const remainder = slice.length % 2;
-    if (remainder !== 0) {
-      page.innerHTML += `<div class="card-wrap" style="visibility:hidden"></div>`;
+      container.appendChild(page);
     }
-
-    container.appendChild(page);
   }
+
+  // Flatten gosti.json groups → individual guest cards (skip children under 3)
+  fetch('/data/gosti.json')
+    .then(r => r.json())
+    .then(groups => {
+      const guests = [];
+      groups.forEach(group => {
+        group.guests.forEach(g => {
+          // skip very young children (no card needed)
+          const ageMatch = g.note && g.note.match(/^(\d+)\s*год/);
+          if (ageMatch && parseInt(ageMatch[1]) < 4) return;
+          guests.push({ name: g.name, table: g.table || 0 });
+        });
+      });
+      renderCards(guests);
+    })
+    .catch(err => {
+      document.getElementById('cards-container').innerHTML =
+        `<p style="padding:2rem;color:red">Грешка при учитавању листе госта: ${err.message}</p>`;
+    });
 </script>
 
 </body>
