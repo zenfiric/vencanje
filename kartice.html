@@ -218,6 +218,11 @@
       font-weight: 300;
     }
 
+    /* ── NO-BG MODE ────────────────────────────────────────── */
+    body.no-bg .card         { background: transparent; }
+    body.no-bg .page         { background: transparent; box-shadow: none; }
+    body.no-bg               { background: #CCC; }
+
     /* ── PRINT ──────────────────────────────────────────────── */
     @media print {
       @page { size: A4 portrait; margin: 0; }
@@ -235,6 +240,7 @@
   <h1>Картице · Милан и Нина · 19. априла 2026.</h1>
   <p>Штампај на A4 · Исеци по испрекиданим линијама · Преломи по средњој линији</p>
   <button class="print-btn" onclick="window.print()">Штампај</button>
+  <button class="print-btn" id="bg-toggle" onclick="document.body.classList.toggle('no-bg');this.textContent=document.body.classList.contains('no-bg')?'Са позадином':'Без позадине'" style="margin-left:0.75rem">Без позадине</button>
 </div>
 
 <div id="cards-container"></div>
