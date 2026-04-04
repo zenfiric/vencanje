@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Карте за столове — Милан и Нина</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── DESIGN TOKENS (matching main site) ─────────────────── */
+    :root {
+      --gold:       #C19A6B;
+      --gold-light: #D4B896;
+      --gold-dark:  #9A7A52;
+      --cream:      #FAF7F2;
+      --cream-dark: #F0EAE0;
+      --text:       #1C1208;
+      --text-mid:   #4A3A28;
+      --text-muted: #7A6A58;
+      --olive:      #4A5C33;
+      --olive-dark: #2E3B1F;
+      --border:     #DDD0B8;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background: #E8E0D4;
+      color: var(--text);
+    }
+
+    /* ── SCREEN CONTROLS (hidden when printing) ─────────────── */
+    .controls {
+      padding: 2rem;
+      text-align: center;
+      background: var(--olive-dark);
+      color: var(--cream);
+    }
+    .controls h1 {
+      font-family: 'Cormorant SC', serif;
+      font-size: 1rem;
+      letter-spacing: 0.4em;
+      font-weight: 300;
+      color: var(--gold-light);
+      margin-bottom: 0.5rem;
+    }
+    .controls p {
+      font-size: 0.85rem;
+      color: rgba(250,247,242,0.55);
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.05em;
+    }
+    .print-btn {
+      display: inline-block;
+      padding: 0.65rem 2rem;
+      border: 1px solid rgba(193,154,107,0.6);
+      color: var(--gold-light);
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      background: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .print-btn:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--olive-dark);
+    }
+
+    /* ── PAGE LAYOUT ────────────────────────────────────────── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 1.5rem auto;
+      background: white;
+      padding: 10mm;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(4, auto);
+      gap: 0;
+      align-content: start;
+    }
+
+    /* ── TENT CARD ───────────────────────────────────────────── */
+    /*
+      Each card is 90mm wide × 60mm tall.
+      Fold along the horizontal midline (at 30mm from top).
+      Top half = back face (upside-down decoration).
+      Bottom half = front face (guest name + table).
+      Cut along the outer dashed lines, fold on the center line.
+    */
+    .card-wrap {
+      width: 90mm;
+      height: 60mm;
+      padding: 1.5mm;
+      position: relative;
+      /* cut marks */
+      border: 0.3mm dashed #CCC;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Back half (top, upside-down) */
+    .card-back {
+      height: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transform: rotate(180deg);
+      padding: 2mm 4mm 1.5mm;
+      gap: 1.5mm;
+      position: relative;
+    }
+    .card-back::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 0.3mm;
+      background: var(--border);
+      /* fold line */
+    }
+    .back-ornament {
+      color: var(--gold);
+      font-size: 7pt;
+      letter-spacing: 0.5em;
+      opacity: 0.6;
+    }
+    .back-names {
+      font-family: 'Cormorant SC', serif;
+      font-size: 7pt;
+      letter-spacing: 0.3em;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* Fold indicator */
+    .fold-line {
+      position: absolute;
+      left: 0; right: 0;
+      top: 50%;
+      height: 0;
+      border-top: 0.5mm dashed var(--border);
+      z-index: 10;
+      pointer-events: none;
+    }
+    .fold-label {
+      position: absolute;
+      right: 2mm;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 5pt;
+      color: #BBB;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.1em;
+    }
+
+    /* Front half (bottom) */
+    .card-front {
+      height: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5mm 5mm 3mm;
+      position: relative;
+      gap: 1mm;
+    }
+
+    /* Corner accents on front face */
+    .card-front::before,
+    .card-front::after {
+      content: '';
+      position: absolute;
+      width: 5mm; height: 5mm;
+      border-color: var(--gold);
+      border-style: solid;
+      opacity: 0.7;
+    }
+    .card-front::before {
+      bottom: 1.5mm; left: 1.5mm;
+      border-width: 0 0 0.5mm 0.5mm;
+    }
+    .card-front::after {
+      bottom: 1.5mm; right: 1.5mm;
+      border-width: 0 0.5mm 0.5mm 0;
+    }
+
+    .guest-name {
+      font-size: 16pt;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.15;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+    .guest-name.long { font-size: 13pt; }
+
+    .name-rule {
+      width: 12mm; height: 0.3mm;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    .table-label {
+      font-family: 'Cormorant SC', serif;
+      font-size: 6.5pt;
+      letter-spacing: 0.35em;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* Top corner accents (front face top edge) */
+    .corner-tl, .corner-tr {
+      position: absolute;
+      width: 4.5mm; height: 4.5mm;
+      border-color: var(--gold);
+      border-style: solid;
+      opacity: 0.5;
+    }
+    .corner-tl { top: 1mm; left: 1mm; border-width: 0.4mm 0 0 0.4mm; }
+    .corner-tr { top: 1mm; right: 1mm; border-width: 0.4mm 0.4mm 0 0; }
+
+    /* ── PRINT STYLES ───────────────────────────────────────── */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      body { background: white; }
+      .controls { display: none; }
+
+      .page {
+        margin: 0;
+        padding: 10mm;
+        page-break-after: always;
+        box-shadow: none;
+      }
+
+      .card-wrap {
+        border-color: #DDD;
+      }
+
+      .fold-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="controls">
+  <h1>Карте за столове · Милан и Нина · 19. April 2026.</h1>
+  <p>Штампај на A4 · Исеци по испрекиданим линијама · Преломи по средњој линији</p>
+  <button class="print-btn" onclick="window.print()">Штампај</button>
+</div>
+
+<div id="cards-container"></div>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // GUEST LIST — edit this array to add / change guests
+  // table: 0  →  no table label shown  (e.g. for wedding couple)
+  // ─────────────────────────────────────────────────────────
+  const guests = [
+    // Сто 1
+    { name: "Нина Глуховић",       table: 1 },
+    { name: "Милан Јелисавчић",    table: 1 },
+
+    // Сто 2
+    { name: "Марија Петровић",     table: 2 },
+    { name: "Јован Петровић",      table: 2 },
+    { name: "Ана Николић",         table: 2 },
+    { name: "Лука Николић",        table: 2 },
+
+    // Сто 3
+    { name: "Биљана Стојановић",   table: 3 },
+    { name: "Драган Стојановић",   table: 3 },
+    { name: "Тамара Илић",         table: 3 },
+    { name: "Немања Илић",         table: 3 },
+
+    // Сто 4
+    { name: "Весна Ђорђевић",      table: 4 },
+    { name: "Зоран Ђорђевић",      table: 4 },
+    { name: "Сунчица Павловић",    table: 4 },
+    { name: "Миљан Павловић",      table: 4 },
+
+    // Сто 5
+    { name: "Александра Јовић",    table: 5 },
+    { name: "Стефан Јовић",        table: 5 },
+  ];
+
+  // ─────────────────────────────────────────────────────────
+  // Render cards — 8 per A4 page (2 cols × 4 rows)
+  // ─────────────────────────────────────────────────────────
+  const CARDS_PER_PAGE = 8;
+  const container = document.getElementById('cards-container');
+
+  for (let i = 0; i < guests.length; i += CARDS_PER_PAGE) {
+    const page = document.createElement('div');
+    page.className = 'page';
+
+    const slice = guests.slice(i, i + CARDS_PER_PAGE);
+
+    slice.forEach(guest => {
+      const isLong = guest.name.length > 18;
+      const tableStr = guest.table
+        ? `Сто · ${guest.table} ·`
+        : '✦';
+
+      page.innerHTML += `
+        <div class="card-wrap">
+          <div class="card">
+
+            <!-- Back face (upside-down, visible from behind tent) -->
+            <div class="card-back">
+              <div class="back-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+              <div class="back-names">Милан &amp; Нина · 19. April 2026.</div>
+            </div>
+
+            <!-- Fold indicator (screen only) -->
+            <div class="fold-line">
+              <span class="fold-label">— fold —</span>
+            </div>
+
+            <!-- Front face -->
+            <div class="card-front">
+              <div class="corner-tl"></div>
+              <div class="corner-tr"></div>
+              <div class="guest-name${isLong ? ' long' : ''}">${guest.name}</div>
+              <div class="name-rule"></div>
+              <div class="table-label">${tableStr}</div>
+            </div>
+
+          </div>
+        </div>
+      `;
+    });
+
+    // Fill remaining slots with blank cards to keep grid alignment
+    const remainder = slice.length % 2;
+    if (remainder !== 0) {
+      page.innerHTML += `<div class="card-wrap" style="visibility:hidden"></div>`;
+    }
+
+    container.appendChild(page);
+  }
+</script>
+
+</body>
+</html>
