@@ -218,10 +218,30 @@
       font-weight: 300;
     }
 
-    /* ── NO-BG MODE ────────────────────────────────────────── */
-    body.no-bg .card         { background: transparent; }
-    body.no-bg .page         { background: transparent; box-shadow: none; }
-    body.no-bg               { background: #CCC; }
+    /* ── INVITATION-STYLE (with background) ────────────────── */
+    body.with-bg .card {
+      background: var(--olive-dark);
+    }
+    body.with-bg .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('/img/lale_gold.png') center / cover no-repeat;
+      opacity: 0.20;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body.with-bg .card > * { position: relative; z-index: 1; }
+
+    body.with-bg .guest-name  { color: var(--cream); }
+    body.with-bg .table-label { color: var(--gold-light); }
+    body.with-bg .back-names  { color: var(--gold-light); }
+    body.with-bg .card-back::after { background: rgba(193,154,107,0.3); }
+    body.with-bg .card-front::before,
+    body.with-bg .card-front::after { opacity: 0.9; }
+    body.with-bg .corner-tl,
+    body.with-bg .corner-tr         { opacity: 0.7; }
+    body.with-bg .name-rule         { opacity: 0.8; }
 
     /* ── PRINT ──────────────────────────────────────────────── */
     @media print {
@@ -240,7 +260,7 @@
   <h1>Картице · Милан и Нина · 19. априла 2026.</h1>
   <p>Штампај на A4 · Исеци по испрекиданим линијама · Преломи по средњој линији</p>
   <button class="print-btn" onclick="window.print()">Штампај</button>
-  <button class="print-btn" id="bg-toggle" onclick="document.body.classList.toggle('no-bg');this.textContent=document.body.classList.contains('no-bg')?'Са позадином':'Без позадине'" style="margin-left:0.75rem">Без позадине</button>
+  <button class="print-btn" id="bg-toggle" onclick="document.body.classList.toggle('with-bg');this.textContent=document.body.classList.contains('with-bg')?'Без позадине':'Са позадином'" style="margin-left:0.75rem">Са позадином</button>
 </div>
 
 <div id="cards-container"></div>
