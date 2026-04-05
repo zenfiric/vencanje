@@ -185,7 +185,11 @@
     }
 
     /* ── INVITATION BG MODE ─────────────────────────────────── */
-    body.with-bg .card { background: var(--olive-dark); }
+    body.with-bg .card {
+      background: var(--olive-dark);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
     body.with-bg .card::before {
       content: '';
       position: absolute; inset: 0;
