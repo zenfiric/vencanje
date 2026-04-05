@@ -172,11 +172,12 @@
       font-weight: 300;
       font-style: italic;
       color: var(--text);
-      line-height: 1.15;
+      line-height: 1.25;
       text-align: center;
+      word-break: break-word;
     }
-    .guest-name.long  { font-size: 13pt; }
-    .guest-name.vlong { font-size: 10.5pt; }
+    .guest-name.long  { font-size: 14pt; }
+    .guest-name.vlong { font-size: 13pt; }
 
     .name-rule {
       width: 12mm; height: 0.3mm;
@@ -238,7 +239,7 @@
 
         names.slice(i, i + PER_PAGE).forEach(name => {
           const len = name.length;
-          const sz  = len > 24 ? ' vlong' : len > 17 ? ' long' : '';
+          const sz  = len > 22 ? ' vlong' : len > 14 ? ' long' : '';
           const div = document.createElement('div');
           div.className = 'card-wrap';
           div.innerHTML = `
