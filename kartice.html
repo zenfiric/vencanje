@@ -15,11 +15,8 @@
       --gold-light: #D4B896;
       --gold-dark:  #9A7A52;
       --cream:      #FAF7F2;
-      --cream-dark: #F0EAE0;
       --text:       #1C1208;
-      --text-mid:   #4A3A28;
       --text-muted: #7A6A58;
-      --olive:      #4A5C33;
       --olive-dark: #2E3B1F;
       --border:     #DDD0B8;
     }
@@ -36,7 +33,6 @@
       padding: 2rem;
       text-align: center;
       background: var(--olive-dark);
-      color: var(--cream);
     }
     .controls h1 {
       font-family: 'Cormorant SC', serif;
@@ -65,11 +61,7 @@
       transition: all 0.3s ease;
       margin: 0 0.35rem;
     }
-    .btn:hover {
-      background: var(--gold);
-      border-color: var(--gold);
-      color: var(--olive-dark);
-    }
+    .btn:hover { background: var(--gold); border-color: var(--gold); color: var(--olive-dark); }
 
     /* ── PAGE ───────────────────────────────────────────────── */
     .page {
@@ -77,27 +69,12 @@
       margin: 1.5rem auto;
       background: white;
       padding: 10mm;
-    }
-
-    /* ── SECTION LABEL (screen only) ────────────────────────── */
-    .section-label {
-      font-family: 'Cormorant SC', serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.4em;
-      color: var(--gold-dark);
-      margin-bottom: 4mm;
-      margin-top: 6mm;
-    }
-    .section-label:first-child { margin-top: 0; }
-
-    /* ── INDIVIDUAL CARDS GRID ──────────────────────────────── */
-    .cards-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0;
+      align-content: start;
     }
 
-    /* ── TENT CARD (individual) ─────────────────────────────── */
+    /* ── TENT CARD — 90mm × 60mm ────────────────────────────── */
     .card-wrap {
       width: 90mm;
       height: 60mm;
@@ -121,7 +98,6 @@
       justify-content: center;
       flex-direction: column;
       transform: rotate(180deg);
-      padding: 2mm 4mm 1.5mm;
       gap: 1.5mm;
       position: relative;
     }
@@ -146,7 +122,7 @@
       font-weight: 300;
     }
 
-    /* Fold indicator (screen only) */
+    /* Fold line (screen only) */
     .fold-line {
       position: absolute;
       left: 0; right: 0; top: 50%;
@@ -158,10 +134,8 @@
       position: absolute;
       right: 2mm; top: 50%;
       transform: translateY(-50%);
-      font-size: 5pt;
-      color: #BBB;
+      font-size: 5pt; color: #BBB;
       font-family: Arial, sans-serif;
-      letter-spacing: 0.1em;
     }
 
     /* Front face (bottom half) */
@@ -171,9 +145,9 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.5mm 5mm 3mm;
+      padding: 2mm 5mm 3.5mm;
       position: relative;
-      gap: 1mm;
+      gap: 1.5mm;
     }
     .card-front::before, .card-front::after {
       content: '';
@@ -185,13 +159,10 @@
     }
     .card-front::before { bottom: 1.5mm; left: 1.5mm;  border-width: 0 0 0.5mm 0.5mm; }
     .card-front::after  { bottom: 1.5mm; right: 1.5mm; border-width: 0 0.5mm 0.5mm 0; }
-
     .corner-tl, .corner-tr {
       position: absolute;
       width: 4.5mm; height: 4.5mm;
-      border-color: var(--gold);
-      border-style: solid;
-      opacity: 0.5;
+      border-color: var(--gold); border-style: solid; opacity: 0.5;
     }
     .corner-tl { top: 1mm; left: 1mm;  border-width: 0.4mm 0 0 0.4mm; }
     .corner-tr { top: 1mm; right: 1mm; border-width: 0.4mm 0.4mm 0 0; }
@@ -209,173 +180,35 @@
 
     .name-rule {
       width: 12mm; height: 0.3mm;
-      background: var(--gold);
-      opacity: 0.6;
-    }
-    .table-label {
-      font-family: 'Cormorant SC', serif;
-      font-size: 6.5pt;
-      letter-spacing: 0.35em;
-      color: var(--text-muted);
-      font-weight: 300;
-    }
-
-    /* ── GROUP TABLE CARD ───────────────────────────────────── */
-    /*
-      Full-width tent card — 190mm × 110mm
-      Fold at midpoint (55mm from top).
-      Back half (top): ornament + wedding names
-      Front half (bottom): table number + guest name columns
-    */
-    .group-wrap {
-      width: 190mm;
-      height: 110mm;
-      padding: 1.5mm;
-      border: 0.3mm dashed #CCC;
-      margin-bottom: 0;
-    }
-    .group-card {
-      width: 100%; height: 100%;
-      background: var(--cream);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Group back face */
-    .group-back {
-      height: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      transform: rotate(180deg);
-      gap: 2mm;
-      position: relative;
-    }
-    .group-back::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 0.3mm;
-      background: var(--border);
-    }
-    .group-back .back-ornament { font-size: 9pt; letter-spacing: 0.8em; }
-    .group-back .back-names    { font-size: 8.5pt; letter-spacing: 0.35em; }
-
-    /* Group fold */
-    .group-fold {
-      position: absolute;
-      left: 0; right: 0; top: 50%;
-      border-top: 0.5mm dashed var(--border);
-      z-index: 10;
-      pointer-events: none;
-    }
-
-    /* Group front face */
-    .group-front {
-      height: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 3mm 8mm 4mm;
-      position: relative;
-      gap: 2.5mm;
-    }
-    .group-front::before, .group-front::after {
-      content: '';
-      position: absolute;
-      width: 7mm; height: 7mm;
-      border-color: var(--gold);
-      border-style: solid;
-      opacity: 0.7;
-    }
-    .group-front::before { bottom: 2mm; left: 2mm;  border-width: 0 0 0.5mm 0.5mm; }
-    .group-front::after  { bottom: 2mm; right: 2mm; border-width: 0 0.5mm 0.5mm 0; }
-
-    .gcorner-tl, .gcorner-tr {
-      position: absolute;
-      width: 7mm; height: 7mm;
-      border-color: var(--gold);
-      border-style: solid;
-      opacity: 0.5;
-    }
-    .gcorner-tl { top: 2mm; left: 2mm;  border-width: 0.5mm 0 0 0.5mm; }
-    .gcorner-tr { top: 2mm; right: 2mm; border-width: 0.5mm 0.5mm 0 0; }
-
-    .group-table-no {
-      font-family: 'Cormorant SC', serif;
-      font-size: 7.5pt;
-      letter-spacing: 0.45em;
-      color: var(--gold-dark);
-      font-weight: 300;
-    }
-    .group-rule {
-      width: 20mm; height: 0.3mm;
-      background: var(--gold);
-      opacity: 0.5;
-    }
-    .group-names {
-      display: flex;
-      gap: 6mm;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .group-col {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5mm;
-      min-width: 0;
-    }
-    .group-name {
-      font-size: 9pt;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text-mid);
-      white-space: nowrap;
-      text-align: center;
-      line-height: 1.4;
+      background: var(--gold); opacity: 0.6;
     }
 
     /* ── INVITATION BG MODE ─────────────────────────────────── */
-    body.with-bg .card,
-    body.with-bg .group-card {
-      background: var(--olive-dark);
-    }
-    body.with-bg .card::before,
-    body.with-bg .group-card::before {
+    body.with-bg .card { background: var(--olive-dark); }
+    body.with-bg .card::before {
       content: '';
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: url('/img/lale_gold.png') center / cover no-repeat;
       opacity: 0.20;
-      pointer-events: none;
-      z-index: 0;
+      pointer-events: none; z-index: 0;
     }
-    body.with-bg .card > *,
-    body.with-bg .group-card > * { position: relative; z-index: 1; }
-
-    body.with-bg .guest-name,
-    body.with-bg .group-name   { color: var(--cream); }
-    body.with-bg .table-label,
-    body.with-bg .group-table-no { color: var(--gold-light); }
-    body.with-bg .back-names   { color: var(--gold-light); }
-    body.with-bg .card-back::after,
-    body.with-bg .group-back::after { background: rgba(193,154,107,0.3); }
-    body.with-bg .name-rule,
-    body.with-bg .group-rule   { opacity: 0.8; }
+    body.with-bg .card > * { position: relative; z-index: 1; }
+    body.with-bg .guest-name { color: var(--cream); }
+    body.with-bg .back-names { color: var(--gold-light); }
+    body.with-bg .card-back::after { background: rgba(193,154,107,0.3); }
+    body.with-bg .name-rule  { opacity: 0.8; }
+    body.with-bg .card-front::before,
+    body.with-bg .card-front::after { opacity: 0.9; }
+    body.with-bg .corner-tl,
+    body.with-bg .corner-tr  { opacity: 0.7; }
 
     /* ── PRINT ──────────────────────────────────────────────── */
     @media print {
       @page { size: A4 portrait; margin: 0; }
       body { background: white; }
       .controls { display: none; }
-      .page { margin: 0; padding: 10mm; box-shadow: none; }
-      .section-label { display: none; }
-      .card-wrap  { border-color: #DDD; }
-      .group-wrap { border-color: #DDD; }
+      .page { margin: 0; padding: 10mm; page-break-after: always; box-shadow: none; }
+      .card-wrap { border-color: #DDD; }
       .fold-label { display: none; }
     }
   </style>
@@ -386,110 +219,55 @@
   <h1>Картице · Милан и Нина · 19. априла 2026.</h1>
   <p>Штампај на A4 · Исеци по испрекиданим линијама · Преломи по средњој линији</p>
   <button class="btn" onclick="window.print()">Штампај</button>
-  <button class="btn" id="bg-btn" onclick="document.body.classList.toggle('with-bg');this.textContent=document.body.classList.contains('with-bg')?'Без позадине':'Са позадином'">Са позадином</button>
+  <button class="btn" onclick="document.body.classList.toggle('with-bg');this.textContent=document.body.classList.contains('with-bg')?'Без позадине':'Са позадином'">Са позадином</button>
 </div>
 
 <div id="cards-container"></div>
 
 <script>
-  const CARDS_PER_ROW = 2;
-  const CARDS_PER_PAGE = 8;
-
-  function cardHTML(name, sto) {
-    const len = name.length;
-    const sz  = len > 24 ? ' vlong' : len > 17 ? ' long' : '';
-    const tbl = sto ? `Сто · ${sto} ·` : '✦';
-    return `
-      <div class="card-wrap">
-        <div class="card">
-          <div class="card-back">
-            <div class="back-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
-            <div class="back-names">Милан и Нина · 19. априла 2026.</div>
-          </div>
-          <div class="fold-line"><span class="fold-label">— fold —</span></div>
-          <div class="card-front">
-            <div class="corner-tl"></div>
-            <div class="corner-tr"></div>
-            <div class="guest-name${sz}">${name}</div>
-            <div class="name-rule"></div>
-            <div class="table-label">${tbl}</div>
-          </div>
-        </div>
-      </div>`;
-  }
-
-  function groupCardHTML(sto, names) {
-    // split names into 3 columns
-    const cols = [[], [], []];
-    names.forEach((n, i) => cols[i % 3].push(n));
-    const colsHTML = cols
-      .filter(c => c.length)
-      .map(c => `<div class="group-col">${c.map(n => `<div class="group-name">${n}</div>`).join('')}</div>`)
-      .join('');
-    return `
-      <div class="group-wrap">
-        <div class="group-card">
-          <div class="group-back">
-            <div class="back-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
-            <div class="back-names">Милан и Нина · 19. априла 2026.</div>
-          </div>
-          <div class="group-fold"></div>
-          <div class="group-front">
-            <div class="gcorner-tl"></div>
-            <div class="gcorner-tr"></div>
-            <div class="group-table-no">Сто · ${sto} ·</div>
-            <div class="group-rule"></div>
-            <div class="group-names">${colsHTML}</div>
-          </div>
-        </div>
-      </div>`;
-  }
+  const PER_PAGE = 8;
 
   fetch('/data/gosti.json')
     .then(r => r.json())
-    .then(tables => {
+    .then(names => {
       const container = document.getElementById('cards-container');
 
-      tables.forEach(table => {
-        if (table.tip === 'pojedinacno') {
-          // Individual tent cards, 8 per A4 page
-          const page = document.createElement('div');
-          page.className = 'page';
-          page.innerHTML = `<div class="section-label">Сто ${table.sto} — појединачне картице</div><div class="cards-grid" id="grid-${table.sto}"></div>`;
-          container.appendChild(page);
+      for (let i = 0; i < names.length; i += PER_PAGE) {
+        const page = document.createElement('div');
+        page.className = 'page';
 
-          const grid = page.querySelector(`#grid-${table.sto}`);
-          table.gosti.forEach((name, i) => {
-            if (i > 0 && i % CARDS_PER_PAGE === 0) {
-              // new page
-              const np = document.createElement('div');
-              np.className = 'page';
-              np.innerHTML = `<div class="cards-grid" id="grid-${table.sto}-${i}"></div>`;
-              container.appendChild(np);
-            }
-            const targetGrid = container.querySelector(`[id^="grid-${table.sto}"]:last-of-type`) || grid;
-            targetGrid.innerHTML += cardHTML(name, table.sto);
-          });
+        names.slice(i, i + PER_PAGE).forEach(name => {
+          const len = name.length;
+          const sz  = len > 24 ? ' vlong' : len > 17 ? ' long' : '';
+          const div = document.createElement('div');
+          div.className = 'card-wrap';
+          div.innerHTML = `
+            <div class="card">
+              <div class="card-back">
+                <div class="back-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+                <div class="back-names">Милан и Нина · 19. априла 2026.</div>
+              </div>
+              <div class="fold-line"><span class="fold-label">— fold —</span></div>
+              <div class="card-front">
+                <div class="corner-tl"></div>
+                <div class="corner-tr"></div>
+                <div class="guest-name${sz}">${name}</div>
+                <div class="name-rule"></div>
+              </div>
+            </div>`;
+          page.appendChild(div);
+        });
 
-          // pad to even
-          const allGrids = container.querySelectorAll(`[id^="grid-${table.sto}"]`);
-          const lastGrid = allGrids[allGrids.length - 1];
-          if (table.gosti.length % 2 !== 0) {
-            lastGrid.innerHTML += `<div class="card-wrap" style="visibility:hidden"></div>`;
-          }
-
-        } else {
-          // Group table card
-          const page = document.createElement('div');
-          page.className = 'page';
-          page.innerHTML = `<div class="section-label">Сто ${table.sto} — групна картица</div>${groupCardHTML(table.sto, table.gosti)}`;
-          container.appendChild(page);
+        // pad last row if odd number
+        if (names.slice(i, i + PER_PAGE).length % 2 !== 0) {
+          const spacer = document.createElement('div');
+          spacer.className = 'card-wrap';
+          spacer.style.visibility = 'hidden';
+          page.appendChild(spacer);
         }
-      });
-    })
-    .catch(err => {
-      document.getElementById('cards-container').innerHTML =
-        `<p style="padding:2rem;color:red">Грешка: ${err.message}</p>`;
+
+        container.appendChild(page);
+      }
     });
 </script>
 
