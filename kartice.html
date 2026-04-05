@@ -168,12 +168,12 @@
     .corner-tr { top: 1mm; right: 1mm; border-width: 0.4mm 0.4mm 0 0; }
 
     .guest-name {
-      font-size: 14pt;
       font-weight: 300;
       font-style: italic;
       color: var(--text);
       line-height: 1.3;
       text-align: center;
+      width: 100%;
     }
 
     .name-rule {
@@ -229,6 +229,16 @@
 <script>
   const PER_PAGE = 8;
 
+  // Scale each name to fill the card width (max 18pt, min 9pt, max 2 lines)
+  function fitName(el) {
+    const maxW = el.parentElement.offsetWidth;
+    const maxH = el.parentElement.offsetHeight * 0.65; // max 65% of front face height
+    for (let pt = 18; pt >= 9; pt -= 0.5) {
+      el.style.fontSize = pt + 'pt';
+      if (el.scrollWidth <= maxW && el.scrollHeight <= maxH) break;
+    }
+  }
+
   fetch('/data/gosti.json')
     .then(r => r.json())
     .then(names => {
@@ -268,6 +278,11 @@
 
         container.appendChild(page);
       }
+
+      // fit after layout
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.guest-name').forEach(fitName);
+      });
     });
 </script>
 
