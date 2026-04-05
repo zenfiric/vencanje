@@ -168,16 +168,13 @@
     .corner-tr { top: 1mm; right: 1mm; border-width: 0.4mm 0.4mm 0 0; }
 
     .guest-name {
-      font-size: 16pt;
+      font-size: 14pt;
       font-weight: 300;
       font-style: italic;
       color: var(--text);
-      line-height: 1.25;
+      line-height: 1.3;
       text-align: center;
-      word-break: break-word;
     }
-    .guest-name.long  { font-size: 14pt; }
-    .guest-name.vlong { font-size: 13pt; }
 
     .name-rule {
       width: 12mm; height: 0.3mm;
@@ -242,8 +239,6 @@
         page.className = 'page';
 
         names.slice(i, i + PER_PAGE).forEach(name => {
-          const len = name.length;
-          const sz  = len > 22 ? ' vlong' : len > 14 ? ' long' : '';
           const div = document.createElement('div');
           div.className = 'card-wrap';
           div.innerHTML = `
@@ -256,7 +251,7 @@
               <div class="card-front">
                 <div class="corner-tl"></div>
                 <div class="corner-tr"></div>
-                <div class="guest-name${sz}">${name}</div>
+                <div class="guest-name">${name}</div>
                 <div class="name-rule"></div>
               </div>
             </div>`;
