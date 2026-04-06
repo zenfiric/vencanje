@@ -209,7 +209,8 @@
       @page { size: A4 portrait; margin: 0; }
       body { background: white; }
       .controls { display: none; }
-      .page { margin: 0; padding: 10mm; page-break-after: always; box-shadow: none; }
+      .page { margin: 0; padding: 10mm; box-shadow: none; }
+      .page:not(:last-child) { page-break-after: always; }
       .card-wrap { border-color: #DDD; }
       .fold-label { display: none; }
     }
